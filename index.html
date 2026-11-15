@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Satya Academy – One-on-one mathematics tutoring, Math 6 to university level</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700;800&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  color-scheme: light;
+  --bg:#f3f6fb; --surface:#ffffff; --text:#0c1d3a; --muted:#4a5d7a; --line:#d3deee;
+  --board:#071b36; --chalk:#ffffff; --pencil:#e8531d; --pencil-ink:#ffffff; --link:#0f47a1; --royal:#0f47a1;
+  box-sizing:border-box; padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme: dark;
+    --bg:#06152b; --surface:#0d2748; --text:#eaf1fb; --muted:#9db4d6; --line:#1d3a63; --link:#7fb0ff;
+  }
+}
+:root[data-theme="dark"]{color-scheme:dark;--bg:#06152b;--surface:#0d2748;--text:#eaf1fb;--muted:#9db4d6;--line:#1d3a63;--link:#7fb0ff}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:env(safe-area-inset-top,0px);scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--text);font:400 1.0625rem/1.6 Figtree,system-ui,sans-serif}
+h1,h2,h3{font-family:"Bricolage Grotesque",Georgia,sans-serif;line-height:1.1;margin:0 0 .5em;letter-spacing:-.01em}
+h1{font-size:clamp(2.4rem,6vw,4rem);font-weight:800}
+h2{font-size:clamp(1.8rem,4vw,2.6rem);font-weight:700}
+h3{font-size:1.25rem;font-weight:700}
+p{margin:0 0 1em;max-width:62ch}
+a{color:var(--link)}
+:focus-visible{outline:3px solid var(--pencil);outline-offset:3px}
+.wrap{max-width:1080px;margin:0 auto;padding:0 1.25rem}
+section{padding:4.5rem 0}
+header.nav{display:flex;justify-content:space-between;align-items:center;gap:1rem;padding:1rem 0;flex-wrap:wrap;background:var(--royal);box-shadow:0 0 0 100vmax var(--royal);clip-path:inset(0 -100vmax)}
+.brand{font-family:"Bricolage Grotesque",sans-serif;font-weight:800;font-size:1.25rem;text-decoration:none;color:var(--text)}
+.brand img{display:block;height:46px;width:auto}
+nav a{margin-left:1.25rem;text-decoration:none;color:var(--text);font-weight:500}
+nav a{margin-left:.25rem;padding:.4rem .8rem;border-radius:8px;transition:background .2s,color .2s}
+nav a:hover{background:var(--pencil);color:#fff;text-decoration:none}
+.btn{display:inline-block;background:var(--pencil);color:var(--pencil-ink);font-weight:600;padding:.85rem 1.5rem;border-radius:999px;text-decoration:none;border:0;font:inherit;font-weight:600;cursor:pointer}
+.btn{transition:background .2s,border-color .2s,color .2s}
+.btn:hover{filter:brightness(.95)}
+.btn.ghost:hover,.hero .btn.ghost:hover{background:var(--pencil);border-color:var(--pencil);color:#fff;filter:none}
+.btn.ghost{background:transparent;color:var(--text);border:2px solid var(--line)}
+
+/* hero: the chalkboard */
+.hero{background:var(--board);color:var(--chalk);border-radius:0 0 28px 28px}
+.hero .nav a,.hero .brand{color:var(--chalk)}
+.hero-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:3rem;align-items:center;padding:3rem 0 4.5rem}
+.hero p{color:#8db4f0;font-size:1.2rem}
+.hero .actions{display:flex;gap:.75rem;flex-wrap:wrap;margin-top:1.5rem}
+.hero .btn.ghost{color:var(--chalk);border-color:#3a5a86}
+.board{font-family:"Bricolage Grotesque",sans-serif;font-weight:500;font-size:1.35rem;line-height:1.9;border:2px dashed #1f4a8a;border-radius:16px;padding:1.5rem 1.75rem;background:rgba(15,71,161,.25)}
+.board .line{display:block;opacity:0;animation:write .6s ease forwards}
+.board .l1{animation-delay:.2s}.board .l2{animation-delay:.9s}.board .l3{animation-delay:1.6s}.board .l4{animation-delay:2.3s}
+.board .note{color:var(--pencil);font-size:1rem}
+.board .ans{color:var(--pencil);font-weight:700;border-bottom:3px solid var(--pencil)}
+@keyframes write{from{opacity:0;transform:translateX(-8px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.board .line{animation:none;opacity:1}html{scroll-behavior:auto}}
+
+/* subjects */
+.subjects{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1.25rem;margin-top:2rem}
+.subject{background:var(--surface);border:1px solid var(--line);border-left:6px solid var(--pencil);border-radius:6px 18px 18px 6px;padding:1.5rem}
+.subject p{color:var(--muted);margin:0}
+.subject .lv{font-weight:600;color:var(--text);margin-bottom:.5rem;font-size:.95rem}
+.subject ul{list-style:none;margin:.75rem 0 0;padding:0;display:flex;flex-wrap:wrap;gap:.4rem}
+.subject li{background:var(--bg);border:1px solid var(--line);border-radius:999px;padding:.2rem .7rem;font-size:.9rem}
+
+/* steps */
+.steps{list-style:none;counter-reset:s;padding:0;margin:2rem 0 0;display:grid;gap:1.25rem;grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
+.steps li{counter-increment:s;padding-top:3.25rem;position:relative}
+.steps li::before{content:counter(s);position:absolute;top:0;left:0;width:2.5rem;height:2.5rem;border-radius:50%;background:var(--royal);color:#fff;display:grid;place-items:center;font:700 1.1rem "Bricolage Grotesque",sans-serif}
+.steps p{color:var(--muted);margin:0}
+
+/* about + pricing */
+.about{display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:start}
+.facts{display:grid;gap:1rem}
+.fact{border-top:2px solid var(--line);padding-top:.75rem}
+.fact b{font-family:"Bricolage Grotesque",sans-serif;font-size:1.5rem;display:block}
+.fact span{color:var(--muted)}
+.prices{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1.25rem;margin-top:2rem}
+.price{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:1.5rem}
+.price .amt{font:800 2.2rem "Bricolage Grotesque",sans-serif}
+.price .amt small{font:400 1rem Figtree,sans-serif;color:var(--muted)}
+.price p{color:var(--muted);margin:.5rem 0 0}
+.price.main{border:2px solid var(--pencil)}
+
+/* course curriculum */
+.subject li.has{padding:0;border-color:var(--pencil)}
+.subject li.has button{font:inherit;color:inherit;background:none;border:0;padding:.2rem .7rem;border-radius:999px;cursor:pointer}
+.subject li.has:hover{background:var(--pencil)}
+.subject li.has:hover button{color:#fff}
+dialog.cur{border:0;border-radius:18px;padding:0;width:min(720px,calc(100vw - 2rem));background:var(--surface);color:var(--text);box-shadow:0 20px 60px rgba(0,0,0,.4)}
+dialog.cur[open]{display:flex;flex-direction:column;max-height:calc(100dvh - 2rem)}
+dialog.cur::backdrop{background:rgba(7,27,54,.7)}
+.cur-head{display:flex;justify-content:space-between;gap:1rem;align-items:flex-start;padding:1.25rem 1.5rem;background:var(--board);color:#fff}
+.cur-head h3{margin:0;color:#fff}
+.cur-head p{margin:.25rem 0 0;color:#8db4f0;font-size:.95rem}
+.cur-close{flex:none;background:var(--pencil);color:#fff;border:0;border-radius:999px;width:2.25rem;height:2.25rem;font-size:1.25rem;line-height:1;cursor:pointer}
+.cur-body{padding:.5rem 1.5rem 1.5rem;overflow:auto}
+.cur-body h4{font:700 1.1rem "Bricolage Grotesque",sans-serif;margin:1.25rem 0 .6rem}
+.cur-body h4 small{font:500 .9rem Figtree,sans-serif;color:var(--muted);margin-left:.4rem}
+.cur-body ul{list-style:none;margin:0;padding:0;display:grid;gap:.6rem}
+.cur-body li{display:grid;grid-template-columns:5.5rem 1fr;gap:.75rem}
+.cur-body code{font:600 .85rem ui-monospace,Menlo,monospace;color:var(--link)}
+.cur-body li.plain{display:block;position:relative;padding-left:1.1rem}
+.cur-body li.plain::before{content:"";position:absolute;left:0;top:.65em;width:.45rem;height:.45rem;border-radius:50%;background:var(--pencil)}
+.cur-foot{margin-top:1.5rem}
+
+/* layout fixes, whatsapp, feedback */
+.subject ul{display:grid;grid-template-columns:1fr;gap:.5rem}
+.subject li{border-radius:10px;padding:.5rem .8rem}
+.subject li.has{padding:0}
+.subject li.has button{width:100%;display:flex;justify-content:space-between;align-items:center;gap:.5rem;text-align:left;padding:.5rem .8rem;border-radius:10px}
+.subject li.has button::after{content:"\203A";color:var(--pencil);font-size:1.2rem;line-height:1}
+.subject li.has:hover button::after{color:#fff}
+.btn.wa{background:#128c4a;color:#fff}
+.wa-float{position:fixed;right:1rem;bottom:calc(1rem + env(safe-area-inset-bottom,0px));z-index:20;display:flex;align-items:center;gap:.5rem;background:#128c4a;color:#fff;text-decoration:none;font-weight:600;padding:.7rem 1rem;border-radius:999px;box-shadow:0 6px 20px rgba(0,0,0,.3)}
+.wa-float:hover{filter:brightness(1.1)}
+.fb{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:1.75rem;max-width:760px}
+.fb label{display:grid;gap:.35rem;font-weight:600;color:#fff}
+.fb .full{grid-column:1/-1}
+.fb .check{display:flex;gap:.6rem;align-items:flex-start;font-weight:400;color:#cfe0f7}
+.fb .check input{margin-top:.3rem}
+.fb .row{display:flex;gap:.75rem;flex-wrap:wrap}
+.fb .status{color:#8db4f0;min-height:1.5em}
+.reviews .btn.ghost{color:#fff;border-color:#3a5a86}
+@media (max-width:640px){.fb{grid-template-columns:1fr}}
+
+/* reviews */
+.reviews{background:var(--board);color:var(--chalk)}
+.reviews h2{color:#fff}
+.reviews p.lead{color:#8db4f0}
+.quotes{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.25rem;margin-top:2rem}
+.quote{margin:0;background:rgba(15,71,161,.3);border:1px solid #1f4a8a;border-top:5px solid var(--pencil);border-radius:6px 6px 18px 18px;padding:1.5rem;display:flex;flex-direction:column;justify-content:space-between;gap:1.25rem}
+.quote blockquote{margin:0;font-size:1.1rem;line-height:1.6}
+.quote figcaption{font-weight:600}
+.quote figcaption span{display:block;font-weight:400;color:#8db4f0;font-size:.95rem}
+
+/* contact */
+.contact{background:var(--surface);border-top:1px solid var(--line)}
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:3rem}
+form{display:grid;gap:1rem}
+label{font-weight:600;display:grid;gap:.35rem}
+input,select,textarea{font:inherit;padding:.75rem .9rem;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--text)}
+textarea{min-height:120px;resize:vertical}
+.status{min-height:1.5em;color:var(--link);font-weight:600}
+footer{padding:2rem 0;color:var(--muted);font-size:.95rem;text-align:center}
+@media (max-width:760px){
+  .hero-grid,.about,.contact-grid{grid-template-columns:1fr;gap:2rem}
+  section{padding:3rem 0}
+  nav a{margin:0 1rem 0 0}
+}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="wrap">
+    <header class="nav">
+      <a class="brand" href="#top" aria-label="Satya Academy, home"><img src="data:image/png;base64,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" alt="Satya Academy logo" width="132" height="121"></a>
+      <nav aria-label="Main">
+        <a href="#subjects">Subjects</a>
+        <a href="#how">How it works</a>
+        <a href="#about">About</a>
+        <a href="#reviews">Feedback</a>
+        <a href="#pricing">Fees</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </header>
+    <div class="hero-grid" id="top">
+      <div>
+        <h1>Expert math tutoring, trusted guidance, proven results.</h1>
+        <p>One-on-one mathematics tutoring, from Math 6 and Algebra to AP Calculus and university-level courses. Online, with a plan built around the student’s next exam.</p>
+        <div class="actions">
+          <a class="btn" href="#contact">Book a free trial lesson</a>
+          <a class="btn ghost" href="#subjects">See subjects</a>
+        </div>
+      </div>
+      <div class="board" aria-label="A worked algebra example">
+        <span class="line l1">Solve: 3x + 5 = 20</span>
+        <span class="line l2">3x = 20 − 5 = 15</span>
+        <span class="line l3">x = 15 ÷ 3</span>
+        <span class="line l4"><span class="ans">x = 5</span> <span class="note">&nbsp;check: 3(5) + 5 = 20 ✓</span></span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<main>
+<section id="subjects">
+  <div class="wrap">
+    <h2>Mathematics, from Math 6 to advanced university courses</h2>
+    <p>Every lesson starts from what the student already understands, then builds from there. Select a course with an orange outline to see its curriculum.</p>
+    <div class="subjects">
+      <div class="subject"><h3>Middle school</h3><ul><li class="has"><button type="button" data-course="math6">Math 6</button></li><li>Math 7</li><li>Math 7 Plus</li><li>Math 8</li><li>Pre-Algebra</li></ul></div>
+      <div class="subject"><h3>High school</h3><ul><li>Algebra 1</li><li>Algebra 1 Honors</li><li>Algebra 2</li><li>Algebra 2 Honors</li><li>Geometry</li><li>Trigonometry</li><li>Precalculus</li><li>Precalculus Honors</li></ul></div>
+      <div class="subject"><h3>AP courses</h3><ul><li>AP Precalculus</li><li>AP Calculus AB</li><li>AP Calculus BC</li><li>AP Statistics</li><li>AP Computer Science</li></ul></div>
+      <div class="subject"><h3>College calculus and beyond</h3><ul><li>Calculus 1 (single variable, differential)</li><li>Calculus 2 (single variable, integral)</li><li>Calculus 3 (multivariable)</li><li>Calculus 4 (vector calculus)</li><li>Discrete Math</li><li>Linear Algebra</li><li>Ordinary Differential Equations</li><li>Abstract Algebra</li></ul></div>
+      <div class="subject"><h3>Advanced mathematics</h3><ul><li>Real Analysis</li><li>Complex Analysis</li><li>Topology</li><li>Functional Analysis</li></ul><p style="margin-top:.75rem">Plus all other higher-level math subjects. Ask if you don’t see yours.</p></div>
+      <div class="subject"><h3>Test prep and competitions</h3><ul><li>SAT Math</li><li>PSAT Math</li><li>ACT Math</li><li>AMC 8/10/12</li><li>AIME</li><li>MATHCOUNTS</li></ul><p style="margin-top:.75rem">Other competitive exams on request. Ask if you don’t see yours.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="how" style="background:var(--surface);border-top:1px solid var(--line);border-bottom:1px solid var(--line)">
+  <div class="wrap">
+    <h2>How it works</h2>
+    <ol class="steps">
+      <li><h3>Free trial lesson</h3><p>30 minutes to meet, find gaps and talk about goals. No payment, no commitment.</p></li>
+      <li><h3>A simple plan</h3><p>You get a short written plan: topics, weekly schedule and what progress will look like.</p></li>
+      <li><h3>Weekly lessons</h3><p>Live video sessions with a shared whiteboard. Notes are sent after every lesson.</p></li>
+      <li><h3>Progress updates</h3><p>A short summary for parents every month, covering scores, strengths and next steps.</p></li>
+    </ol>
+  </div>
+</section>
+
+<section id="about">
+  <div class="wrap about">
+    <div>
+      <h2>Hi, I’m your tutor.</h2>
+      <p>I’ve spent years helping students who felt stuck stop dreading their hardest subject. I explain ideas in plain language, use lots of examples, and never rush past a question.</p>
+      <p>Replace this paragraph with your own story: your background, qualifications and why you teach.</p>
+    </div>
+    <div class="facts">
+      <div class="fact"><b>8+ years</b><span>teaching experience</span></div>
+      <div class="fact"><b>200+ students</b><span>helped so far</span></div>
+      <div class="fact"><b>Small groups or 1-on-1</b><span>you choose the format</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="reviews" id="reviews">
+  <div class="wrap">
+    <h2>Feedback from students and parents</h2>
+    <p class="lead">Studied with me? Please share your honest experience. Feedback is only shown on this site with your permission, and it is never edited or invented.</p>
+    <form class="fb" id="fb" novalidate>
+      <label>Your name<input name="name" autocomplete="name"></label>
+      <label>I am a
+        <select name="role"><option>Student</option><option>Parent</option></select>
+      </label>
+      <label>Course<input name="course" placeholder="e.g. Algebra 2"></label>
+      <label>Rating
+        <select name="rating"><option>5 out of 5</option><option>4 out of 5</option><option>3 out of 5</option><option>2 out of 5</option><option>1 out of 5</option></select>
+      </label>
+      <label class="full">Your feedback<textarea name="text" placeholder="What went well? What could be better?"></textarea></label>
+      <label class="full check"><input type="checkbox" name="ok"> You may publish my feedback and first name on this website.</label>
+      <div class="full row">
+        <button class="btn wa" type="button" data-send="wa">Send on WhatsApp</button>
+        <button class="btn ghost" type="button" data-send="mail">Send by email</button>
+      </div>
+      <div class="full status" id="fb-status" role="status"></div>
+    </form>
+  </div>
+</section>
+
+<section id="pricing" style="background:var(--surface);border-top:1px solid var(--line)">
+  <div class="wrap">
+    <h2>Fees</h2>
+    <p>Very affordable monthly subscription plans for every course. Fees depend on the course and how many lessons a week the student needs, so contact me and we will find the right plan.</p>
+    <div style="display:flex;gap:.75rem;flex-wrap:wrap">
+      <a class="btn" href="#contact">Contact for fees</a>
+      <a class="btn wa" href="https://wa.me/919848383468?text=Hello%2C%20I%E2%80%99d%20like%20to%20book%20a%20free%20trial%20math%20lesson." target="_blank" rel="noopener">Ask on WhatsApp</a>
+    </div>
+  </div>
+</section>
+
+<section class="contact" id="contact">
+  <div class="wrap contact-grid">
+    <div>
+      <h2>Book a free trial lesson</h2>
+      <p>Tell me a bit about the student and I’ll reply within one working day with available times.</p>
+      <p><strong>Email:</strong> <a href="mailto:satya@satyaacademy.org">satya@satyaacademy.org</a><br><strong>Phone / WhatsApp:</strong> <a href="https://wa.me/919848383468">+91 98483 83468</a></p>
+      <a class="btn wa" href="https://wa.me/919848383468?text=Hello%2C%20I%E2%80%99d%20like%20to%20book%20a%20free%20trial%20math%20lesson." target="_blank" rel="noopener">Chat on WhatsApp</a>
+    </div>
+    <form id="f" novalidate>
+      <label>Your name<input name="name" required autocomplete="name"></label>
+      <label>Email<input name="email" type="email" required autocomplete="email"></label>
+      <label>Subject
+        <select name="subject"><option>Middle school math</option><option>High school math</option><option>AP courses</option><option>College calculus and beyond</option><option>Advanced mathematics</option><option>SAT, ACT and competitive exams</option></select>
+      </label>
+      <label>Student’s grade<input name="grade" placeholder="e.g. Grade 9"></label>
+      <label>Anything I should know?<textarea name="msg"></textarea></label>
+      <input name="website" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px">
+      <button class="btn" type="submit">Send request</button>
+      <div class="status" id="status" role="status"></div>
+    </form>
+  </div>
+</section>
+</main>
+
+<footer><div class="wrap">© 2026 Satya Academy</div></footer>
+
+<script>
+document.getElementById('f').addEventListener('submit',function(e){
+  e.preventDefault();
+  var f=e.target,s=document.getElementById('status');
+  if(!f.name.value.trim()||!/^\S+@\S+\.\S+$/.test(f.email.value)){s.style.color='#b3261e';s.textContent='Please add your name and a valid email address.';return}
+  s.style.color='';s.textContent='Sending…';
+  fetch('/.netlify/functions/signup',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name:f.name.value,email:f.email.value,subject:f.subject.value,grade:f.grade.value,msg:f.msg.value,website:f.website.value})})
+  .then(function(r){return r.json().then(function(j){return{ok:r.ok,j:j}})})
+  .then(function(x){if(!x.ok)throw new Error();s.textContent='Thank you! Your request is received. I will contact you within one working day.';f.reset()})
+  .catch(function(){s.style.color='#b3261e';s.textContent='Could not send your request. Please message me on WhatsApp instead.'});
+});
+</script>
+<a class="wa-float" href="https://wa.me/919848383468?text=Hello%2C%20I%E2%80%99d%20like%20to%20book%20a%20free%20trial%20math%20lesson." target="_blank" rel="noopener" aria-label="Chat on WhatsApp"><svg viewBox="0 0 32 32" width="24" height="24" fill="#fff" aria-hidden="true"><path d="M16 3C9 3 3.3 8.6 3.3 15.5c0 2.4.7 4.7 1.9 6.6L3 29l7.1-2.1c1.8 1 3.8 1.5 5.9 1.5 7 0 12.7-5.6 12.7-12.5S23 3 16 3zm0 22.8c-1.9 0-3.7-.5-5.3-1.5l-.4-.2-4.2 1.2 1.3-4-.3-.4a10.3 10.3 0 0 1-1.6-5.4C5.5 9.9 10.2 5.3 16 5.3s10.5 4.6 10.5 10.2S21.8 25.8 16 25.8zm5.700-7.600c-.3-.2-1.900-.9-2.200-1-.3-.1-.5-.2-.7.2-.2.3-.8 1-1 1.200-.2.200-.4.200-.7.1-.3-.2-1.400-.5-2.600-1.600-1-.9-1.600-1.900-1.800-2.200-.2-.3 0-.5.1-.7l.5-.6c.2-.2.2-.3.3-.5.1-.2.1-.4 0-.6-.1-.2-.7-1.700-1-2.300-.3-.6-.5-.5-.7-.5h-.6c-.2 0-.6.1-.9.4-.3.3-1.200 1.200-1.200 2.800s1.200 3.200 1.400 3.400c.2.2 2.400 3.700 5.800 5.100 3.400 1.400 3.400.9 4 .9.6-.1 1.900-.8 2.200-1.500.3-.8.3-1.400.2-1.500-.1-.1-.3-.2-.6-.4z"/></svg><span>WhatsApp</span></a>
+<dialog class="cur" id="cur" aria-labelledby="cur-title">
+  <div class="cur-head">
+    <div><h3 id="cur-title"></h3><p id="cur-sub"></p></div>
+    <button type="button" class="cur-close" id="cur-close" aria-label="Close curriculum">×</button>
+  </div>
+  <div class="cur-body" id="cur-body"></div>
+</dialog>
+<script>
+(function(){
+  var COURSES={
+    "Math 6":{title:"Math 6",sub:"Aligned to the Common Core State Standards for Mathematics, Grade 6",domains:[
+      {n:"Ratios and Proportional Relationships",c:"6.RP",i:[
+        ["6.RP.A.1","Understand what a ratio is and describe relationships between two quantities using ratio language."],
+        ["6.RP.A.2","Understand unit rates, such as dollars per pound or miles per hour, and use rate language."],
+        ["6.RP.A.3","Solve real-world ratio and rate problems with tables, tape diagrams, double number lines and equations, including unit pricing, constant speed and percent."]]},
+      {n:"The Number System",c:"6.NS",i:[
+        ["6.NS.A.1","Divide fractions by fractions and solve word problems using visual models and equations."],
+        ["6.NS.B.2","Fluently divide multi-digit whole numbers using the standard algorithm."],
+        ["6.NS.B.3","Fluently add, subtract, multiply and divide multi-digit decimals."],
+        ["6.NS.B.4","Find the greatest common factor and least common multiple, and use the distributive property to rewrite sums."],
+        ["6.NS.C.5","Use positive and negative numbers to describe quantities in real-world contexts, such as temperature, elevation and debt."],
+        ["6.NS.C.6","Place integers and rational numbers on number lines and coordinate planes, and understand opposites and reflections across the axes."],
+        ["6.NS.C.7","Order and compare rational numbers, and understand absolute value as distance from zero."],
+        ["6.NS.C.8","Graph points in all four quadrants and find distances between points that share an x or y coordinate."]]},
+      {n:"Expressions and Equations",c:"6.EE",i:[
+        ["6.EE.A.1","Write and evaluate numerical expressions with whole-number exponents."],
+        ["6.EE.A.2","Write, read and evaluate expressions with variables, using the words term, coefficient and factor."],
+        ["6.EE.A.3","Apply the properties of operations to create equivalent expressions."],
+        ["6.EE.A.4","Recognize when two expressions are equivalent."],
+        ["6.EE.B.5","Understand solving an equation or inequality as finding the values that make it true, and check answers by substitution."],
+        ["6.EE.B.6","Use variables to represent unknown numbers in real-world problems."],
+        ["6.EE.B.7","Solve one-step equations of the form x + p = q and px = q."],
+        ["6.EE.B.8","Write inequalities like x > c to model constraints, and graph their solutions on a number line."],
+        ["6.EE.C.9","Use variables, tables, graphs and equations to show how one quantity changes with another (dependent and independent variables)."]]},
+      {n:"Geometry",c:"6.G",i:[
+        ["6.G.A.1","Find the area of triangles, quadrilaterals and polygons by composing them from, or breaking them into, simpler shapes."],
+        ["6.G.A.2","Find the volume of right rectangular prisms with fractional edge lengths."],
+        ["6.G.A.3","Draw polygons on the coordinate plane from their vertex coordinates and find side lengths."],
+        ["6.G.A.4","Use nets made of rectangles and triangles to find the surface area of three-dimensional figures."]]},
+      {n:"Statistics and Probability",c:"6.SP",i:[
+        ["6.SP.A.1","Recognize statistical questions, which expect variability in the answers."],
+        ["6.SP.A.2","Describe a data set by its center, spread and overall shape."],
+        ["6.SP.A.3","Understand that a measure of center summarizes the data with one number, while a measure of variation describes how spread out it is."],
+        ["6.SP.B.4","Display numerical data on dot plots, histograms and box plots."],
+        ["6.SP.B.5","Summarize data using count, mean, median, range, interquartile range and mean absolute deviation, and describe patterns and unusual values."]]}
+    ]}
+  };
+  function D(n,c,i){return{n:n,c:c,i:i}}
+  function L(items,sub){return{sub:sub,domains:[D('Topics','',items)]}}
+  function H(base,label,extra,sub){var b=COURSES[base];return{sub:sub||b.sub,domains:b.domains.concat([D(label,'',extra)])}}
+  var CC='Aligned to the Common Core State Standards for Mathematics, ',CB='Follows the College Board course framework';
+  COURSES['Math 7']={sub:CC+'Grade 7',domains:[
+    D('Ratios and Proportional Relationships','7.RP',['Unit rates with ratios of fractions','Proportional relationships in tables, graphs and equations','Percent problems: tax, tips, markups, discounts and interest']),
+    D('The Number System','7.NS',['Add, subtract, multiply and divide rational numbers','Convert fractions to decimals, including repeating decimals']),
+    D('Expressions and Equations','7.EE',['Simplify and factor linear expressions','Solve two-step equations and inequalities','Model real-world problems algebraically']),
+    D('Geometry','7.G',['Scale drawings and angle relationships','Circumference and area of circles','Area, surface area and volume of prisms and pyramids']),
+    D('Statistics and Probability','7.SP',['Sampling and making inferences','Comparing two data sets','Probability of simple and compound events'])]};
+  COURSES['Math 7 Plus']=H('Math 7','Pre-Algebra preview',['Multi-step equations and inequalities','Graphing linear equations','Exponents and square roots'],'Math 7 at an accelerated pace, with a preview of Pre-Algebra');
+  COURSES['Math 8']={sub:CC+'Grade 8',domains:[
+    D('Number System, Exponents and Radicals','8.NS, 8.EE',['Rational and irrational numbers','Integer exponent rules and scientific notation','Square roots and cube roots']),
+    D('Equations and Systems','8.EE',['Linear equations with variables on both sides','Slope and graphing lines (y = mx + b)','Systems of two linear equations']),
+    D('Functions','8.F',['Function notation and representations','Linear and nonlinear functions','Rate of change and initial value in models']),
+    D('Geometry','8.G',['Rigid motions, dilations, congruence and similarity','Angle sums, parallel lines and transversals','Pythagorean theorem and volumes of cylinders, cones and spheres']),
+    D('Statistics','8.SP',['Scatter plots and lines of best fit','Two-way tables'])]};
+  COURSES['Pre-Algebra']={sub:'Typical course outline',domains:[
+    D('Number sense','',['Integers, fractions, decimals and percents','Order of operations, exponents and roots']),
+    D('Algebra foundations','',['Variables and expressions','One-step and two-step equations and inequalities','Ratios, proportions and rates','Graphing linear relationships']),
+    D('Geometry and data','',['Angles, area, volume and the Pythagorean theorem','Mean, median, mode and basic probability'])]};
+  COURSES['Algebra 1']={sub:CC+'high school algebra and functions',domains:[
+    D('Equations and Inequalities','HSA',['Linear equations and inequalities, including absolute value','Systems of linear equations and inequalities']),
+    D('Functions','HSF',['Function notation, domain and range','Linear, exponential and quadratic functions','Sequences as functions']),
+    D('Polynomials and Quadratics','HSA',['Operations with polynomials and factoring','Solving quadratics by factoring, completing the square and the quadratic formula']),
+    D('Exponents, Radicals and Data','HSN, HSS',['Exponent rules and radical expressions','Scatter plots, linear regression and two-way tables'])]};
+  COURSES['Algebra 1 Honors']=H('Algebra 1','Honors extensions',['Deeper work with exponential and radical functions','Rational expressions','Harder multi-step and proof-style problems'],'Same core as Algebra 1, taught with extra depth and harder problems');
+  COURSES['Algebra 2']={sub:CC+'high school algebra and functions',domains:[
+    D('Functions','HSF',['Polynomial, rational and radical functions','Exponential and logarithmic functions','Transformations and inverse functions']),
+    D('Algebra and Number','HSA, HSN',['Complex numbers','Polynomial division and the Remainder Theorem','Rational and radical equations','Systems with nonlinear equations']),
+    D('Trigonometry and Sequences','HSF',['Radians, the unit circle and graphs of trig functions','Arithmetic and geometric sequences and series']),
+    D('Statistics and Probability','HSS',['Normal distributions','Sampling, inference and conditional probability'])]};
+  COURSES['Algebra 2 Honors']=H('Algebra 2','Honors extensions',['Matrices and determinants','Conic sections','Binomial theorem and deeper series work'],'Same core as Algebra 2, taught with extra depth and harder problems');
+  COURSES['Geometry']={sub:CC+'high school geometry',domains:[
+    D('Congruence and Proof','HSG-CO',['Transformations and rigid motions','Triangle congruence criteria','Two-column and paragraph proofs']),
+    D('Similarity and Trigonometry','HSG-SRT',['Similar triangles and dilations','Right-triangle trigonometry','Law of sines and law of cosines']),
+    D('Circles and Coordinates','HSG-C, HSG-GPE',['Arcs, chords, tangents and inscribed angles','Equations of circles','Slope, distance, midpoint, parallel and perpendicular lines']),
+    D('Measurement','HSG-GMD',['Area, surface area and volume','Cross sections of solids'])]};
+  COURSES['Trigonometry']={sub:'Typical course outline',domains:[
+    D('Foundations','',['Angles in degrees and radians','Right-triangle trigonometry','The unit circle']),
+    D('Functions and identities','',['Graphs of sine, cosine and tangent','Fundamental, sum, difference and double-angle identities','Inverse trig functions and solving trig equations']),
+    D('Applications','',['Law of sines and law of cosines','Vectors, polar coordinates and complex numbers in polar form'])]};
+  COURSES['Precalculus']={sub:'Typical course outline',domains:[
+    D('Functions','',['Function families and transformations','Polynomial and rational functions','Exponential and logarithmic functions']),
+    D('Trigonometry','',['Unit circle, graphs and identities','Inverse trig functions and polar coordinates']),
+    D('Further topics','',['Vectors and matrices','Sequences and series','Conic sections','Introduction to limits'])]};
+  COURSES['Precalculus Honors']=H('Precalculus','Honors extensions',['Parametric equations','Deeper work on limits and rates of change','Proof-style and modeling problems'],'Same core as Precalculus, taught with extra depth and harder problems');
+  COURSES['AP Precalculus']={sub:CB,domains:[D('Units','',['Unit 1: Polynomial and rational functions','Unit 2: Exponential and logarithmic functions','Unit 3: Trigonometric and polar functions','Unit 4 (not on the AP exam): Functions involving parameters, vectors and matrices'])]};
+  COURSES['AP Calculus AB']={sub:CB,domains:[D('Units','',['Unit 1: Limits and continuity','Unit 2: Differentiation: definition and fundamental properties','Unit 3: Differentiation: composite, implicit and inverse functions','Unit 4: Contextual applications of differentiation','Unit 5: Analytical applications of differentiation','Unit 6: Integration and accumulation of change','Unit 7: Differential equations','Unit 8: Applications of integration'])]};
+  COURSES['AP Calculus BC']=H('AP Calculus AB','Added for BC',['Unit 9: Parametric equations, polar coordinates and vector-valued functions','Unit 10: Infinite sequences and series'],CB+': everything in AB plus two units');
+  COURSES['AP Statistics']={sub:CB,domains:[D('Units','',['Unit 1: Exploring one-variable data','Unit 2: Exploring two-variable data','Unit 3: Collecting data','Unit 4: Probability, random variables and probability distributions','Unit 5: Sampling distributions','Unit 6: Inference for categorical data: proportions','Unit 7: Inference for quantitative data: means','Unit 8: Inference for categorical data: chi-square','Unit 9: Inference for quantitative data: slopes'])]};
+  COURSES['AP Computer Science']={sub:CB+' (AP Computer Science A, Java)',domains:[D('Units','',['Unit 1: Using objects and methods','Unit 2: Selection and iteration','Unit 3: Class creation','Unit 4: Data collections: arrays, ArrayList, 2D arrays, searching, sorting and recursion'])]};
+  COURSES['Calculus 1 (single variable, differential)']=L(['Limits and continuity','Derivative rules: product, quotient and chain','Implicit differentiation and related rates','Curve sketching and optimization','Mean Value Theorem and L’Hôpital’s rule','Antiderivatives and the Fundamental Theorem of Calculus','Introduction to definite integrals and substitution']);
+  COURSES['Calculus 2 (single variable, integral)']=L(['Integration by parts, trig substitution and partial fractions','Improper integrals','Applications: area, volume, arc length and work','Sequences and series, and convergence tests','Power series and Taylor series','Parametric and polar curves','Introduction to differential equations']);
+  COURSES['Calculus 3 (multivariable)']=L(['Vectors, lines and planes in 3D','Vector-valued functions and curvature','Partial derivatives and the gradient','Optimization and Lagrange multipliers','Double and triple integrals','Cylindrical and spherical coordinates']);
+  COURSES['Calculus 4 (vector calculus)']=L(['Vector fields','Line integrals and conservative fields','Green’s theorem','Surface integrals','Stokes’ theorem','The divergence theorem']);
+  COURSES['Discrete Math']=L(['Logic and proof techniques, including induction','Sets, relations and functions','Counting and combinatorics','Probability basics','Graph theory and trees','Recurrence relations','Number theory basics']);
+  COURSES['Linear Algebra']=L(['Systems of linear equations and row reduction','Matrix algebra and inverses','Determinants','Vector spaces, subspaces and bases','Linear transformations','Eigenvalues, eigenvectors and diagonalization','Orthogonality and least squares']);
+  COURSES['Ordinary Differential Equations']=L(['First-order equations: separable, linear and exact','Second-order linear equations','Laplace transforms','Systems of equations and phase portraits','Series solutions','Applications and modeling']);
+  COURSES['Abstract Algebra']=L(['Groups, subgroups and cyclic groups','Permutation groups and Lagrange’s theorem','Homomorphisms and normal subgroups','Quotient groups','Rings, ideals and integral domains','Fields and polynomial rings']);
+  COURSES['Real Analysis']=L(['The real numbers and completeness','Sequences and limits','Continuity and uniform continuity','Differentiation','Riemann integration','Series and uniform convergence','Metric spaces']);
+  COURSES['Complex Analysis']=L(['Complex numbers and analytic functions','The Cauchy–Riemann equations','Contour integration and Cauchy’s theorem','Power series and Laurent series','Residues and their applications','Conformal maps']);
+  COURSES['Topology']=L(['Topological spaces and bases','Continuity and homeomorphisms','Connectedness and compactness','Separation axioms','Product and quotient spaces','Introduction to the fundamental group']);
+  COURSES['Functional Analysis']=L(['Normed and Banach spaces','Hilbert spaces','Bounded linear operators','The Hahn–Banach theorem','The open mapping and closed graph theorems','Introduction to spectral theory']);
+  COURSES['SAT Math']={sub:'Based on the content areas of the digital SAT Math section',domains:[
+    D('Algebra','',['Linear equations and inequalities','Systems of linear equations','Linear functions and their graphs']),
+    D('Advanced Math','',['Quadratic, polynomial and exponential functions','Radical and rational equations','Nonlinear equations and systems']),
+    D('Problem-Solving and Data Analysis','',['Ratios, rates, percentages and units','Probability and statistics','Scatterplots, models and inference']),
+    D('Geometry and Trigonometry','',['Area, volume, lines and angles','Triangles and right-triangle trigonometry','Circles and their equations']),
+    D('Test strategy','',['Timed practice sections','Using the built-in calculator effectively','Reviewing mistakes to find patterns'])]};
+  COURSES['PSAT Math']=Object.assign({},COURSES['SAT Math'],{sub:'PSAT covers the same content areas as the SAT, at a slightly lower difficulty'});
+  COURSES['ACT Math']=L(['Number and Quantity','Algebra','Functions','Geometry','Statistics and Probability','Integrating Essential Skills: percents, rates, proportions, area and volume','Timed practice, pacing and calculator strategy'],'Based on the content categories of the ACT Math section');
+  COURSES['AMC 8/10/12']=L(['Number theory: divisibility, primes and modular arithmetic','Algebra: equations, inequalities, functions and sequences','Geometry: triangles, circles, area, similarity and coordinates','Counting and probability: permutations, combinations and casework','Problem-solving strategies and timed practice'],'Competition mathematics for the AMC 8, AMC 10 and AMC 12');
+  COURSES['AIME']=L(['All AMC 10 and 12 topics in greater depth','Number theory and modular arithmetic','Combinatorics and probability','Advanced geometry and trigonometry','Polynomials, complex numbers and algebra','Integer-answer problem solving under time pressure'],'Preparation for the American Invitational Mathematics Examination');
+  COURSES['MATHCOUNTS']=L(['Arithmetic and number sense','Algebra and equations','Geometry and measurement','Counting and probability','Number theory','Sprint, Target and Countdown round practice'],'Middle school competition mathematics');
+  document.querySelectorAll('.subject li').forEach(function(li){var k=li.textContent.trim();if(COURSES[k]&&!li.classList.contains('has')){li.className='has';li.textContent='';var b=document.createElement('button');b.type='button';b.setAttribute('data-course',k);b.textContent=k;li.appendChild(b)}});
+  var d=document.getElementById("cur"),body=document.getElementById("cur-body");
+  function el(t,txt,cls){var e=document.createElement(t);if(txt)e.textContent=txt;if(cls)e.className=cls;return e}
+  function open(key){
+    var c=COURSES[key];if(!c||!d.showModal)return;
+    document.getElementById("cur-title").textContent=(c.title||key)+": curriculum";
+    document.getElementById("cur-sub").textContent=c.sub||"Typical topics, adapted to each student’s school, textbook or exam board";
+    body.textContent="";
+    c.domains.forEach(function(dm){
+      var h=el("h4",dm.n);if(dm.c)h.appendChild(el("small",dm.c));body.appendChild(h);
+      var ul=el("ul");
+      dm.i.forEach(function(s){var li=el("li");if(typeof s==="string"){li.className="plain";li.textContent=s}else{li.appendChild(el("code",s[0]));li.appendChild(el("span",s[1]))}ul.appendChild(li)});
+      body.appendChild(ul);
+    });
+    var foot=el("div","","cur-foot"),a=el("a","Book a free trial lesson","btn");a.href="#contact";
+    a.addEventListener("click",function(){d.close()});foot.appendChild(a);body.appendChild(foot);
+    d.showModal();body.scrollTop=0;
+  }
+  document.querySelectorAll("[data-course]").forEach(function(b){b.addEventListener("click",function(){open(b.textContent.trim())})});
+  document.getElementById("cur-close").addEventListener("click",function(){d.close()});
+  d.addEventListener("click",function(e){if(e.target===d)d.close()});
+})();
+</script>
+<script>
+(function(){
+  var f=document.getElementById('fb');if(!f)return;
+  var st=document.getElementById('fb-status'),E=f.elements;
+  function msg(){return 'Feedback for Satya Academy\nName: '+E.name.value.trim()+'\nI am a: '+E.role.value+'\nCourse: '+E.course.value.trim()+'\nRating: '+E.rating.value+'\nFeedback: '+E.text.value.trim()+'\nOK to publish on the website: '+(E.ok.checked?'Yes':'No')}
+  function send(kind){
+    if(!E.name.value.trim()||!E.text.value.trim()){st.textContent='Please add your name and your feedback first.';return}
+    var m=msg();
+    if(kind==='wa'){window.open('https://wa.me/919848383468?text='+encodeURIComponent(m),'_blank','noopener')}
+    else{window.location.href='mailto:satya@satyaacademy.org?subject='+encodeURIComponent('Feedback for Satya Academy')+'&body='+encodeURIComponent(m)}
+    st.textContent='Thank you. Your feedback is ready to send.';
+  }
+  f.querySelectorAll('[data-send]').forEach(function(b){b.addEventListener('click',function(){send(b.getAttribute('data-send'))})});
+})();
+</script>
+</body>
+</html>
