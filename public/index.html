@@ -194,7 +194,7 @@ footer{padding:2rem 0;color:var(--muted);font-size:.95rem;text-align:center}
 <section id="subjects">
   <div class="wrap">
     <h2>Mathematics, from Math 6 to advanced university courses</h2>
-    <p>Every lesson starts from what the student already understands, then builds from there. Select a course with an orange outline to see its curriculum.</p>
+    <p>Every lesson starts from what the student already understands, then builds from there. Select any course to explore board-specific units, learning goals and assessment guidance. Official syllabi and school pacing may differ.</p>
     <div class="subjects">
       <div class="subject"><h3>Middle school</h3><ul><li class="has"><button type="button" data-course="math6">Math 6</button></li><li>Math 7</li><li>Math 7 Plus</li><li>Math 8</li><li>Pre-Algebra</li></ul></div>
       <div class="subject"><h3>High school</h3><ul><li>Algebra 1</li><li>Algebra 1 Honors</li><li>Algebra 2</li><li>Algebra 2 Honors</li><li>Geometry</li><li>Trigonometry</li><li>Precalculus</li><li>Precalculus Honors</li></ul></div>
@@ -308,6 +308,14 @@ document.getElementById('f').addEventListener('submit',function(e){
 });
 </script>
 <a class="wa-float" href="https://wa.me/919848383468?text=Hello%2C%20I%E2%80%99d%20like%20to%20book%20a%20free%20trial%20math%20lesson." target="_blank" rel="noopener" aria-label="Chat on WhatsApp"><svg viewBox="0 0 32 32" width="24" height="24" fill="#fff" aria-hidden="true"><path d="M16 3C9 3 3.3 8.6 3.3 15.5c0 2.4.7 4.7 1.9 6.6L3 29l7.1-2.1c1.8 1 3.8 1.5 5.9 1.5 7 0 12.7-5.6 12.7-12.5S23 3 16 3zm0 22.8c-1.9 0-3.7-.5-5.3-1.5l-.4-.2-4.2 1.2 1.3-4-.3-.4a10.3 10.3 0 0 1-1.6-5.4C5.5 9.9 10.2 5.3 16 5.3s10.5 4.6 10.5 10.2S21.8 25.8 16 25.8zm5.700-7.600c-.3-.2-1.900-.9-2.200-1-.3-.1-.5-.2-.7.2-.2.3-.8 1-1 1.200-.2.200-.4.200-.7.1-.3-.2-1.400-.5-2.600-1.600-1-.9-1.600-1.900-1.800-2.200-.2-.3 0-.5.1-.7l.5-.6c.2-.2.2-.3.3-.5.1-.2.1-.4 0-.6-.1-.2-.7-1.700-1-2.300-.3-.6-.5-.5-.7-.5h-.6c-.2 0-.6.1-.9.4-.3.3-1.200 1.200-1.200 2.800s1.200 3.200 1.400 3.400c.2.2 2.400 3.700 5.800 5.100 3.400 1.400 3.400.9 4 .9.6-.1 1.900-.8 2.200-1.500.3-.8.3-1.400.2-1.500-.1-.1-.3-.2-.6-.4z"/></svg><span>WhatsApp</span></a>
+<style>
+.curriculum-controls{display:flex;flex-wrap:wrap;gap:12px;padding:14px 0;margin-bottom:14px;border-bottom:1px solid #d7dce5}
+.curriculum-controls label{display:flex;flex-direction:column;gap:6px;font-weight:600;font-size:.9rem}
+.curriculum-controls select{max-width:100%;min-width:210px;padding:9px;border:1px solid #a9b4c5;border-radius:8px;background:#fff;color:#17233c}
+.curriculum-unit{margin:0 0 16px}
+.curriculum-note{font-size:.85rem;color:#596579;margin:14px 0}
+@media(max-width:520px){.curriculum-controls{display:block}.curriculum-controls label{margin:0 0 12px}.curriculum-controls select{width:100%;min-width:0}}
+</style>
 <dialog class="cur" id="cur" aria-labelledby="cur-title">
   <div class="cur-head">
     <div><h3 id="cur-title"></h3><p id="cur-sub"></p></div>
@@ -430,23 +438,125 @@ document.getElementById('f').addEventListener('submit',function(e){
   COURSES['AMC 8/10/12']=L(['Number theory: divisibility, primes and modular arithmetic','Algebra: equations, inequalities, functions and sequences','Geometry: triangles, circles, area, similarity and coordinates','Counting and probability: permutations, combinations and casework','Problem-solving strategies and timed practice'],'Competition mathematics for the AMC 8, AMC 10 and AMC 12');
   COURSES['AIME']=L(['All AMC 10 and 12 topics in greater depth','Number theory and modular arithmetic','Combinatorics and probability','Advanced geometry and trigonometry','Polynomials, complex numbers and algebra','Integer-answer problem solving under time pressure'],'Preparation for the American Invitational Mathematics Examination');
   COURSES['MATHCOUNTS']=L(['Arithmetic and number sense','Algebra and equations','Geometry and measurement','Counting and probability','Number theory','Sprint, Target and Countdown round practice'],'Middle school competition mathematics');
+  // Board-specific curriculum guides: original teaching summaries, not verbatim board syllabi.
+  var BOARD_GUIDES={
+    "CBSE / NCERT":{
+      "Class 6":[["Number and operations","Whole numbers, integers, factors, multiples, fractions and decimals"],["Algebra and patterns","Variables, simple expressions, number patterns and equations"],["Geometry and measurement","Lines, angles, triangles, perimeter, area and 3D shapes"],["Data handling","Tables, pictographs, bar graphs and interpretation"]],
+      "Class 7":[["Rational numbers","Integers, fractions, decimals and rational numbers"],["Algebra","Expressions, simple equations and exponents"],["Geometry","Angles, triangles, congruence, perimeter and area"],["Data and applications","Data handling, percentages, ratio and proportion"]],
+      "Class 8":[["Numbers and powers","Rational numbers, squares, cubes and exponents"],["Algebraic reasoning","Linear equations, identities and factorisation"],["Geometry and mensuration","Quadrilaterals, surface area and volume"],["Data and applications","Graphs, data handling, percentages and variation"]],
+      "Class 9":[["Number systems and algebra","Real numbers, polynomials, linear equations and algebraic reasoning"],["Coordinate geometry and geometry","Cartesian coordinates, lines, angles, triangles, quadrilaterals and circles"],["Mensuration","Area, surface area and volume"],["Statistics","Data representation, measures and interpretation"]],
+      "Class 10":[["Number systems and algebra","Real numbers, polynomials, pair of linear equations, quadratic equations and arithmetic progressions"],["Geometry and trigonometry","Triangles, circles, trigonometric ratios and applications"],["Coordinate geometry and mensuration","Distance and section formula, areas and volumes"],["Statistics and probability","Grouped data, probability and applications"]],
+      "Class 11":[["Sets and functions","Sets, relations, functions and trigonometric functions"],["Algebra","Complex numbers, inequalities, permutations, combinations, binomial theorem and sequences"],["Coordinate geometry","Straight lines, conics and three-dimensional geometry"],["Calculus and statistics","Limits, derivatives, descriptive statistics and probability"]],
+      "Class 12":[["Relations and algebra","Relations, functions, inverse trigonometric functions, matrices and determinants"],["Calculus","Continuity, differentiability, applications of derivatives, integrals and differential equations"],["Vectors and 3D geometry","Vector algebra, lines and planes"],["Optimization and probability","Linear programming and probability"]]
+    },
+    "IB MYP":{
+      "MYP Mathematics":[["Number","Rational numbers, percentages, proportional reasoning, exponents and number systems"],["Algebra","Expressions, equations, patterns, functions and modeling"],["Geometry and trigonometry","Measurement, transformations, coordinate geometry and trigonometry"],["Statistics and probability","Data collection, representations, inference and probability"],["IB inquiry and assessment","Investigations, real-world contexts, communication and reflection using MYP criteria"]]
+    },
+    "IB DP":{
+      "Mathematics AA SL":[["Number and algebra","Sequences, series, exponents, logarithms and financial applications"],["Functions","Function notation, transformations, composite and inverse functions"],["Geometry and trigonometry","Trigonometric models, identities and equations"],["Statistics and probability","Data, probability distributions and inference"],["Calculus","Differentiation, integration and applications"]],
+      "Mathematics AA HL":[["Number and algebra","Complex numbers, proof, sequences, series and advanced algebra"],["Functions","Advanced transformations, composition and inverses"],["Geometry and trigonometry","Vectors, identities, equations and modeling"],["Statistics and probability","Distributions, inference and advanced probability"],["Calculus","Advanced differentiation, integration, differential equations and series"]],
+      "Mathematics AI SL":[["Number and algebra","Financial mathematics, sequences and modeling"],["Functions","Model selection, interpretation and technology"],["Geometry and trigonometry","Measurement, geometry and applications"],["Statistics and probability","Statistical analysis, distributions and inference"],["Calculus","Rates of change, differentiation and integration in context"]],
+      "Mathematics AI HL":[["Number and algebra","Matrices, modeling, sequences and complex applications"],["Functions","Advanced modeling and technology-supported analysis"],["Geometry and trigonometry","Vectors, geometry and trigonometric modeling"],["Statistics and probability","Advanced probability, statistics and hypothesis testing"],["Calculus","Differentiation, integration, differential equations and numerical methods"]]
+    },
+    "British Columbia":{
+      "Grade 6–7 Mathematics":[["Number","Fractions, decimals, integers, operations and proportional reasoning"],["Patterns and relations","Expressions, equations, patterns and relationships"],["Spatial sense","Geometry, transformations, measurement and coordinates"],["Statistics and probability","Data displays, interpretation and probability"]],
+      "Grade 8–9 Mathematics":[["Number","Rational numbers, exponents and operations"],["Patterns and relations","Linear relations, equations, polynomials and algebraic reasoning"],["Geometry","Pythagorean theorem, surface area, volume and transformations"],["Statistics and financial literacy","Data analysis, probability and financial applications"]],
+      "Mathematics 10":[["Number and algebra","Exponents, polynomial operations and factoring"],["Relations","Linear relations, systems and functions"],["Geometry and trigonometry","Measurement and right-triangle trigonometry"],["Financial literacy","Budgeting, rates and applied problem solving"]],
+      "Foundations of Mathematics 11–12":[["Logical reasoning","Reasoning, proofs, puzzles and mathematical arguments"],["Functions and relations","Functions, modeling and transformations"],["Statistics and probability","Data analysis, probability and inference"],["Financial mathematics","Investments, loans, budgets and applications"]],
+      "Pre-Calculus 11–12":[["Functions","Polynomial, rational, exponential, logarithmic and trigonometric functions"],["Algebra","Equations, inequalities, transformations and inverses"],["Trigonometry","Identities, equations and graphs"],["Sequences and series","Arithmetic and geometric sequences and applications"]],
+      "Calculus 12":[["Limits","Rates of change, continuity and limits"],["Differentiation","Derivative rules, implicit differentiation and applications"],["Integration","Antiderivatives, definite integrals and area"],["Modeling","Optimization and motion applications"]]
+    }
+  };
+  var AP_DETAIL={
+    "AP Precalculus":[["Unit 1: Polynomial and Rational Functions","Rates of change, end behavior, zeros, transformations, rational asymptotes and modeling"],["Unit 2: Exponential and Logarithmic Functions","Exponential growth and decay, logarithms, inverses and modeling"],["Unit 3: Trigonometric and Polar Functions","Unit circle, sinusoidal models, identities, equations and polar functions"],["Unit 4: Functions Involving Parameters, Vectors, and Matrices","Parametric functions, vectors and matrices; not assessed on the AP exam"]],
+    "AP Calculus AB":[["Unit 1: Limits and Continuity","Limit representations, continuity and the intermediate value theorem"],["Unit 2: Differentiation—Definition and Fundamental Properties","Derivative definition, basic rules and differentiability"],["Unit 3: Composite, Implicit, and Inverse Functions","Chain rule, implicit and inverse differentiation"],["Unit 4: Contextual Applications","Motion, related rates and linear approximation"],["Unit 5: Analytical Applications","Extrema, monotonicity, concavity and optimization"],["Unit 6: Integration and Accumulation","Riemann sums, fundamental theorem and substitution"],["Unit 7: Differential Equations","Slope fields, separation of variables and growth models"],["Unit 8: Applications of Integration","Area between curves, volume and accumulation"]],
+    "AP Calculus BC":[["Unit 1: Limits and Continuity","Limits and continuity"],["Unit 2: Differentiation—Definition and Fundamental Properties","Derivative rules and interpretations"],["Unit 3: Composite, Implicit, and Inverse Functions","Chain rule and inverse differentiation"],["Unit 4: Contextual Applications","Related rates and motion"],["Unit 5: Analytical Applications","Optimization, extrema and curve analysis"],["Unit 6: Integration and Accumulation","Definite integrals, the fundamental theorem and integration techniques"],["Unit 7: Differential Equations","Slope fields, separation and logistic models"],["Unit 8: Applications of Integration","Area, volume and accumulation"],["Unit 9: Parametric, Polar, and Vector-Valued Functions","Parametric motion, polar area and vector-valued derivatives"],["Unit 10: Infinite Sequences and Series","Convergence tests, power series and Taylor polynomials"]],
+    "AP Statistics":[["Unit 1: Exploring One-Variable Data","Distributions, center, spread and graphical summaries"],["Unit 2: Exploring Two-Variable Data","Scatterplots, correlation and regression"],["Unit 3: Collecting Data","Sampling, experiments, bias and study design"],["Unit 4: Probability, Random Variables, and Probability Distributions","Probability rules and random variables"],["Unit 5: Sampling Distributions","Sampling variability and the central limit theorem"],["Unit 6: Inference for Categorical Data—Proportions","Confidence intervals and significance tests for proportions"],["Unit 7: Inference for Quantitative Data—Means","t procedures for means"],["Unit 8: Inference for Categorical Data—Chi-Square","Goodness of fit and association"],["Unit 9: Inference for Quantitative Data—Slopes","Regression inference"]]
+  };
+  var OFFICIAL_LINKS={
+    "CBSE / NCERT":"https://cbseacademic.nic.in/curriculum_2027.html",
+    "US Common Core":"https://www.thecorestandards.org/Math/",
+    "College Board AP":"https://apcentral.collegeboard.org/courses",
+    "IB MYP":"https://www.ibo.org/programmes/middle-years-programme/curriculum/",
+    "IB DP":"https://www.ibo.org/programmes/diploma-programme/curriculum/mathematics/",
+    "British Columbia":"https://curriculum.gov.bc.ca/curriculum/mathematics",
+    "SAT / PSAT":"https://satsuite.collegeboard.org/practice/content-domains",
+    "ACT":"https://www.act.org/content/act/en/products-and-services/the-act/test-preparation/description-of-math-test.html"
+  };
+  function guideFromUnits(title,board,units,notice){
+    return {title:title,sub:board+" · "+notice,domains:units.map(function(u){return {n:u[0],i:[u[1],"Learning objective: explain concepts, represent relationships, solve unfamiliar problems and justify conclusions.","Assessment: short diagnostic, guided practice, application problems and a unit mastery check."]}})};
+  }
+  function boardOptions(key){
+    if(AP_DETAIL[key])return ["College Board AP"];
+    if(key==="SAT Math"||key==="PSAT Math")return ["SAT / PSAT"];
+    if(key==="ACT Math")return ["ACT"];
+    if(key.indexOf("Math ")===0||key==="Pre-Algebra"||key.indexOf("Algebra")===0||key==="Geometry"||key==="Trigonometry"||key.indexOf("Precalculus")===0)return ["US Common Core","CBSE / NCERT","IB MYP","IB DP","British Columbia"];
+    return ["University / competition"];
+  }
+  function boardCourse(key,board,level){
+    if(board==="College Board AP"&&AP_DETAIL[key])return guideFromUnits(key,board,AP_DETAIL[key],"College Board unit framework; assessment practice is adapted to the course");
+    if(BOARD_GUIDES[board]){
+      var choices=BOARD_GUIDES[board],selected=choices[level]||choices[Object.keys(choices)[0]];
+      return guideFromUnits(level,board,selected,"Original instructional outline; verify the school’s current subject guide and sequence");
+    }
+    if(board==="SAT / PSAT")return guideFromUnits(key,board,[
+      ["Algebra","Linear equations, systems, inequalities and linear functions"],
+      ["Advanced Math","Nonlinear functions, quadratics, polynomials, rational and radical expressions"],
+      ["Problem-Solving and Data Analysis","Ratios, percentages, statistics, probability and inference"],
+      ["Geometry and Trigonometry","Area, volume, lines, angles, triangles, circles and right-triangle trigonometry (as applicable to the exam)"]
+    ],"College Board mathematics content domains");
+    if(board==="ACT")return guideFromUnits(key,board,[
+      ["Preparing for Higher Math","Number and quantity, algebra, functions, geometry, statistics and probability"],
+      ["Integrating Essential Skills","Rates, proportions, percentages, measurement and multistep problems"],
+      ["Modeling","Interpret, evaluate and improve mathematical models"]
+    ],"ACT mathematics reporting categories; confirm current test blueprint");
+    return COURSES[key];
+  }
   document.querySelectorAll('.subject li').forEach(function(li){var k=li.textContent.trim();if(COURSES[k]&&!li.classList.contains('has')){li.className='has';li.textContent='';var b=document.createElement('button');b.type='button';b.setAttribute('data-course',k);b.textContent=k;li.appendChild(b)}});
   var d=document.getElementById("cur"),body=document.getElementById("cur-body");
   function el(t,txt,cls){var e=document.createElement(t);if(txt)e.textContent=txt;if(cls)e.className=cls;return e}
   function open(key){
-    var c=COURSES[key];if(!c||!d.showModal)return;
-    document.getElementById("cur-title").textContent=(c.title||key)+": curriculum";
-    document.getElementById("cur-sub").textContent=c.sub||"Typical topics, adapted to each student’s school, textbook or exam board";
+    var base=COURSES[key];if(!base||!d.showModal)return;
+    document.getElementById("cur-title").textContent=(base.title||key)+": curriculum";
     body.textContent="";
-    c.domains.forEach(function(dm){
-      var h=el("h4",dm.n);if(dm.c)h.appendChild(el("small",dm.c));body.appendChild(h);
-      var ul=el("ul");
-      dm.i.forEach(function(s){var li=el("li");if(typeof s==="string"){li.className="plain";li.textContent=s}else{li.appendChild(el("code",s[0]));li.appendChild(el("span",s[1]))}ul.appendChild(li)});
-      body.appendChild(ul);
-    });
-    var foot=el("div","","cur-foot"),a=el("a","Book a free trial lesson","btn");a.href="#contact";
-    a.addEventListener("click",function(){d.close()});foot.appendChild(a);body.appendChild(foot);
-    d.showModal();body.scrollTop=0;
+    var control=el("div","","curriculum-controls");
+    var opts=boardOptions(key);
+    var boardLabel=el("label","Curriculum board: ");
+    var boardSelect=el("select");
+    opts.forEach(function(o){var op=el("option",o);op.value=o;boardSelect.appendChild(op)});
+    boardLabel.appendChild(boardSelect);control.appendChild(boardLabel);
+    var levelLabel=el("label"," Grade / pathway: ");
+    var levelSelect=el("select");levelLabel.appendChild(levelSelect);control.appendChild(levelLabel);
+    body.appendChild(control);
+    var content=el("div");body.appendChild(content);
+    function refreshLevels(){
+      levelSelect.textContent="";
+      var levels=BOARD_GUIDES[boardSelect.value]?Object.keys(BOARD_GUIDES[boardSelect.value]):[];
+      levels.forEach(function(o){var op=el("option",o);op.value=o;levelSelect.appendChild(op)});
+      var m=key.match(/(?:Math )?(6|7|8|9|10|11|12)/);
+      if(m){var target=levels.find(function(o){return o==="Class "+m[1]||o.indexOf("Grade "+m[1])===0});if(target)levelSelect.value=target}
+      levelLabel.hidden=!levels.length;
+      render();
+    }
+    function render(){
+      var board=boardSelect.value,c=boardCourse(key,board,levelSelect.value);
+      document.getElementById("cur-sub").textContent=c.sub||"Instructor-designed course outline";
+      content.textContent="";
+      c.domains.forEach(function(dm){
+        var section=el("section","","curriculum-unit");
+        var h=el("h4",dm.n);if(dm.c)h.appendChild(el("small",dm.c));section.appendChild(h);
+        var ul=el("ul");
+        dm.i.forEach(function(item){var li=el("li");if(typeof item==="string"){li.className="plain";li.textContent=item}else{li.appendChild(el("code",item[0]));li.appendChild(el("span",item[1]))}ul.appendChild(li)});
+        section.appendChild(ul);content.appendChild(section);
+      });
+      var note=el("p","Curriculum guidance is independently prepared by Satya Academy. School pacing, course selection and assessment requirements can vary. This is not an official board publication.","curriculum-note");content.appendChild(note);
+      if(OFFICIAL_LINKS[board]){var link=el("a","View official curriculum source");link.href=OFFICIAL_LINKS[board];link.target="_blank";link.rel="noopener noreferrer";content.appendChild(link)}
+      var foot=el("div","","cur-foot"),a=el("a","Book a free trial lesson","btn");a.href="#contact";
+      a.addEventListener("click",function(){d.close()});foot.appendChild(a);content.appendChild(foot);
+    }
+    boardSelect.addEventListener("change",refreshLevels);
+    levelSelect.addEventListener("change",render);
+    refreshLevels();d.showModal();body.scrollTop=0;
   }
   document.querySelectorAll("[data-course]").forEach(function(b){b.addEventListener("click",function(){open(b.textContent.trim())})});
   document.getElementById("cur-close").addEventListener("click",function(){d.close()});
