@@ -242,22 +242,21 @@ footer{padding:2rem 0;color:var(--muted);font-size:.95rem;text-align:center}
   <div class="wrap">
     <h2>Feedback from students and parents</h2>
     <p class="lead">Studied with me? Please share your honest experience. Feedback is only shown on this site with your permission, and it is never edited or invented.</p>
-    <form class="fb" id="fb" novalidate>
-      <label>Your name<input name="name" autocomplete="name"></label>
+    <form class="fb" id="feedback" name="website-feedback" method="POST" action="/feedback-thank-you.html" data-netlify="true" netlify-honeypot="feedback-bot-field">
+      <input type="hidden" name="form-name" value="website-feedback">
+      <p style="position:absolute;left:-10000px;width:1px;height:1px;overflow:hidden" aria-hidden="true"><label>Leave this field empty <input name="feedback-bot-field" tabindex="-1" autocomplete="off"></label></p>
+      <label>Your name<input name="name" autocomplete="name" required maxlength="100"></label>
       <label>I am a
-        <select name="role"><option>Student</option><option>Parent</option></select>
+        <select name="role" required><option>Student</option><option>Parent</option></select>
       </label>
-      <label>Course<input name="course" placeholder="e.g. Algebra 2"></label>
+      <label>Course<input name="course" placeholder="e.g. Algebra 2" maxlength="100"></label>
       <label>Rating
-        <select name="rating"><option>5 out of 5</option><option>4 out of 5</option><option>3 out of 5</option><option>2 out of 5</option><option>1 out of 5</option></select>
+        <select name="rating" required><option>5 out of 5</option><option>4 out of 5</option><option>3 out of 5</option><option>2 out of 5</option><option>1 out of 5</option></select>
       </label>
-      <label class="full">Your feedback<textarea name="text" placeholder="What went well? What could be better?"></textarea></label>
-      <label class="full check"><input type="checkbox" name="ok"> You may publish my feedback and first name on this website.</label>
-      <div class="full row">
-        <button class="btn wa" type="button" data-send="wa">Send on WhatsApp</button>
-        <button class="btn ghost" type="button" data-send="mail">Send by email</button>
-      </div>
-      <div class="full status" id="fb-status" role="status"></div>
+      <label class="full">Your feedback<textarea name="feedback" placeholder="What went well? What could be better?" required maxlength="3000"></textarea></label>
+      <label class="full check"><input type="checkbox" name="publish_permission" value="Yes"> You may publish my feedback and first name on this website. (Optional; leaving this unchecked keeps your feedback private.)</label>
+      <p class="full">Your feedback is submitted directly through this website and processed by Netlify. It is reviewed before any public display.</p>
+      <div class="full row"><button class="btn" type="submit">Submit feedback</button></div>
     </form>
   </div>
 </section>
@@ -600,20 +599,6 @@ footer{padding:2rem 0;color:var(--muted);font-size:.95rem;text-align:center}
   d.addEventListener("click",function(e){if(e.target===d)d.close()});
 })();
 </script>
-<script>
-(function(){
-  var f=document.getElementById('fb');if(!f)return;
-  var st=document.getElementById('fb-status'),E=f.elements;
-  function msg(){return 'Feedback for Satya Academy\nName: '+E.name.value.trim()+'\nI am a: '+E.role.value+'\nCourse: '+E.course.value.trim()+'\nRating: '+E.rating.value+'\nFeedback: '+E.text.value.trim()+'\nOK to publish on the website: '+(E.ok.checked?'Yes':'No')}
-  function send(kind){
-    if(!E.name.value.trim()||!E.text.value.trim()){st.textContent='Please add your name and your feedback first.';return}
-    var m=msg();
-    if(kind==='wa'){window.open('https://wa.me/919848383468?text='+encodeURIComponent(m),'_blank','noopener')}
-    else{window.location.href='mailto:satya@satyaacademy.org?subject='+encodeURIComponent('Feedback for Satya Academy')+'&body='+encodeURIComponent(m)}
-    st.textContent='Thank you. Your feedback is ready to send.';
-  }
-  f.querySelectorAll('[data-send]').forEach(function(b){b.addEventListener('click',function(){send(b.getAttribute('data-send'))})});
-})();
-</script>
+
 </body>
 </html>
