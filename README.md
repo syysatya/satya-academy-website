@@ -4,9 +4,9 @@ This package preserves the original Claude-generated website and Netlify functio
 
 ## Deploy with GitHub (recommended)
 
-1. Create a GitHub repository named `satya-academy`.
-2. Upload the **contents** of this folder (not the outer ZIP) to the repository root.
-3. In Netlify, choose **Add new project → Import an existing project**, connect GitHub, and select the repository.
+1. Use the existing GitHub repository `syysatya/satya-academy-website`.
+2. The repository is already arranged with `public/index.html` and `netlify/functions/signup.js`.
+3. In Netlify, choose **Add new project → Import an existing project**, connect GitHub, and select `satya-academy-website`.
 4. Keep the repository root as the Base directory. Leave the Build command empty. The `netlify.toml` sets the publish directory to `public` and functions directory to `netlify/functions`.
 5. Deploy.
 
