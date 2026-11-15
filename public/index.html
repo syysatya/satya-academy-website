@@ -535,6 +535,8 @@ document.getElementById('f').addEventListener('submit',function(e){
       levels.forEach(function(o){var op=el("option",o);op.value=o;levelSelect.appendChild(op)});
       var m=key.match(/(?:Math )?(6|7|8|9|10|11|12)/);
       if(m){var target=levels.find(function(o){return o==="Class "+m[1]||o.indexOf("Grade "+m[1])===0});if(target)levelSelect.value=target}
+      else if(boardSelect.value==="CBSE / NCERT"){levelSelect.value=/Precalculus|Trigonometry|Algebra 2/.test(key)?"Class 11":"Class 9"}
+      else if(boardSelect.value==="British Columbia"){levelSelect.value=/Precalculus|Trigonometry|Algebra 2/.test(key)?"Pre-Calculus 11–12":"Mathematics 10"}
       levelLabel.hidden=!levels.length;
       render();
     }
