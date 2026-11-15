@@ -240,24 +240,44 @@ footer{padding:2rem 0;color:var(--muted);font-size:.95rem;text-align:center}
 
 <section class="reviews" id="reviews">
   <div class="wrap">
-    <h2>Feedback from students and parents</h2>
-    <p class="lead">Studied with me? Please share your honest experience. Feedback is only shown on this site with your permission, and it is never edited or invented.</p>
-    <form class="fb" id="feedback" name="website-feedback" method="POST" action="/feedback-thank-you.html" data-netlify="true" netlify-honeypot="feedback-bot-field">
-      <input type="hidden" name="form-name" value="website-feedback">
-      <p style="position:absolute;left:-10000px;width:1px;height:1px;overflow:hidden" aria-hidden="true"><label>Leave this field empty <input name="feedback-bot-field" tabindex="-1" autocomplete="off"></label></p>
-      <label>Your name<input name="name" autocomplete="name" required maxlength="100"></label>
-      <label>I am a
-        <select name="role" required><option>Student</option><option>Parent</option></select>
-      </label>
-      <label>Course<input name="course" placeholder="e.g. Algebra 2" maxlength="100"></label>
-      <label>Rating
-        <select name="rating" required><option>5 out of 5</option><option>4 out of 5</option><option>3 out of 5</option><option>2 out of 5</option><option>1 out of 5</option></select>
-      </label>
-      <label class="full">Your feedback<textarea name="feedback" placeholder="What went well? What could be better?" required maxlength="3000"></textarea></label>
-      <label class="full check"><input type="checkbox" name="publish_permission" value="Yes"> You may publish my feedback and first name on this website. (Optional; leaving this unchecked keeps your feedback private.)</label>
-      <p class="full">Your feedback is submitted directly through this website and processed by Netlify. It is reviewed before any public display.</p>
-      <div class="full row"><button class="btn" type="submit">Submit feedback</button></div>
-    </form>
+    <div class="reviews-heading">
+      <div>
+        <h2>What students and parents say</h2>
+        <p class="lead">Read approved feedback from Satya Academy learners and families. Every published comment is reviewed first.</p>
+      </div>
+      <a class="btn ghost" href="/testimonials.html">View all testimonials</a>
+    </div>
+    <div id="testimonial-list" class="quotes" aria-live="polite" aria-busy="true">
+      <p class="testimonial-state">Loading approved testimonials…</p>
+    </div>
+    <div class="testimonial-controls" id="testimonial-controls" hidden>
+      <button class="btn ghost" id="testimonial-prev" type="button" aria-label="Previous testimonials">←</button>
+      <span id="testimonial-page" aria-live="polite"></span>
+      <button class="btn ghost" id="testimonial-next" type="button" aria-label="Next testimonials">→</button>
+    </div>
+    <details class="feedback-details">
+      <summary>Share your experience</summary>
+      <p class="feedback-intro">Studied with me? Please share your honest experience. Publication is optional, and feedback is never published automatically.</p>
+      <form class="fb" id="feedback" name="website-feedback" method="POST" action="/.netlify/functions/submit-feedback" netlify-honeypot="feedback-bot-field">
+        <p class="sr-only"><label>Leave this field empty <input name="feedback-bot-field" tabindex="-1" autocomplete="off"></label></p>
+        <label>Your name<input name="name" autocomplete="name" required maxlength="100"></label>
+        <label>I am a
+          <select name="role" required><option value="Student">Student</option><option value="Parent">Parent</option></select>
+        </label>
+        <label>Course<input name="course" placeholder="e.g. AP Calculus BC" required maxlength="100" list="course-options"></label>
+        <datalist id="course-options">
+          <option>AP Calculus BC</option><option>AP Calculus AB</option><option>AP Precalculus</option>
+          <option>Algebra 1</option><option>Algebra 2</option><option>Geometry</option><option>SAT Math</option>
+        </datalist>
+        <label>Rating
+          <select name="rating" required><option value="5">5 out of 5</option><option value="4">4 out of 5</option><option value="3">3 out of 5</option><option value="2">2 out of 5</option><option value="1">1 out of 5</option></select>
+        </label>
+        <label class="full">Your feedback<textarea name="feedback" placeholder="What went well? What could be better?" required maxlength="3000"></textarea></label>
+        <label class="full check"><input type="checkbox" name="publish_permission" value="yes"> You may publish my feedback and display name on this website. (Optional; leaving this unchecked keeps your feedback private.)</label>
+        <p class="full feedback-intro">All feedback is held for review. Permission to publish does not mean it will be published automatically.</p>
+        <div class="full row"><button class="btn" type="submit">Submit feedback</button><span id="feedback-status" class="status" role="status" aria-live="polite"></span></div>
+      </form>
+    </details>
   </div>
 </section>
 
