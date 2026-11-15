@@ -648,6 +648,13 @@ footer{padding:2rem 0;color:var(--muted);font-size:.95rem;text-align:center}
   const esc = (value) => String(value ?? "").replace(/[&<>"']/g, ch => ({
     "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
   })[ch]);
+  window.SatyaTestimonials = {
+    forCourse: function (course) {
+      const norm = value => String(value || "").toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
+      const target = norm(course);
+      return records.filter(item => norm(item.course) === target);
+    }
+  };
   function render() {
     list.textContent = "";
     if (!records.length) {
