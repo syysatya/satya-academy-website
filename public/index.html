@@ -240,24 +240,44 @@ footer{padding:2rem 0;color:var(--muted);font-size:.95rem;text-align:center}
 
 <section class="reviews" id="reviews">
   <div class="wrap">
-    <h2>Feedback from students and parents</h2>
-    <p class="lead">Studied with me? Please share your honest experience. Feedback is only shown on this site with your permission, and it is never edited or invented.</p>
-    <form class="fb" id="feedback" name="website-feedback" method="POST" action="/feedback-thank-you.html" data-netlify="true" netlify-honeypot="feedback-bot-field">
-      <input type="hidden" name="form-name" value="website-feedback">
-      <p style="position:absolute;left:-10000px;width:1px;height:1px;overflow:hidden" aria-hidden="true"><label>Leave this field empty <input name="feedback-bot-field" tabindex="-1" autocomplete="off"></label></p>
-      <label>Your name<input name="name" autocomplete="name" required maxlength="100"></label>
-      <label>I am a
-        <select name="role" required><option>Student</option><option>Parent</option></select>
-      </label>
-      <label>Course<input name="course" placeholder="e.g. Algebra 2" maxlength="100"></label>
-      <label>Rating
-        <select name="rating" required><option>5 out of 5</option><option>4 out of 5</option><option>3 out of 5</option><option>2 out of 5</option><option>1 out of 5</option></select>
-      </label>
-      <label class="full">Your feedback<textarea name="feedback" placeholder="What went well? What could be better?" required maxlength="3000"></textarea></label>
-      <label class="full check"><input type="checkbox" name="publish_permission" value="Yes"> You may publish my feedback and first name on this website. (Optional; leaving this unchecked keeps your feedback private.)</label>
-      <p class="full">Your feedback is submitted directly through this website and processed by Netlify. It is reviewed before any public display.</p>
-      <div class="full row"><button class="btn" type="submit">Submit feedback</button></div>
-    </form>
+    <div class="reviews-heading">
+      <div>
+        <h2>What students and parents say</h2>
+        <p class="lead">Read approved feedback from Satya Academy learners and families. Every published comment is reviewed first.</p>
+      </div>
+      <a class="btn ghost" href="/testimonials.html">View all testimonials</a>
+    </div>
+    <div id="testimonial-list" class="quotes" aria-live="polite" aria-busy="true">
+      <p class="testimonial-state">Loading approved testimonials…</p>
+    </div>
+    <div class="testimonial-controls" id="testimonial-controls" hidden>
+      <button class="btn ghost" id="testimonial-prev" type="button" aria-label="Previous testimonials">←</button>
+      <span id="testimonial-page" aria-live="polite"></span>
+      <button class="btn ghost" id="testimonial-next" type="button" aria-label="Next testimonials">→</button>
+    </div>
+    <details class="feedback-details">
+      <summary>Share your experience</summary>
+      <p class="feedback-intro">Studied with me? Please share your honest experience. Publication is optional, and feedback is never published automatically.</p>
+      <form class="fb" id="feedback" name="website-feedback" method="POST" action="/.netlify/functions/submit-feedback" netlify-honeypot="feedback-bot-field">
+        <p class="sr-only"><label>Leave this field empty <input name="feedback-bot-field" tabindex="-1" autocomplete="off"></label></p>
+        <label>Your name<input name="name" autocomplete="name" required maxlength="100"></label>
+        <label>I am a
+          <select name="role" required><option value="Student">Student</option><option value="Parent">Parent</option></select>
+        </label>
+        <label>Course<input name="course" placeholder="e.g. AP Calculus BC" required maxlength="100" list="course-options"></label>
+        <datalist id="course-options">
+          <option>AP Calculus BC</option><option>AP Calculus AB</option><option>AP Precalculus</option>
+          <option>Algebra 1</option><option>Algebra 2</option><option>Geometry</option><option>SAT Math</option>
+        </datalist>
+        <label>Rating
+          <select name="rating" required><option value="5">5 out of 5</option><option value="4">4 out of 5</option><option value="3">3 out of 5</option><option value="2">2 out of 5</option><option value="1">1 out of 5</option></select>
+        </label>
+        <label class="full">Your feedback<textarea name="feedback" placeholder="What went well? What could be better?" required maxlength="3000"></textarea></label>
+        <label class="full check"><input type="checkbox" name="publish_permission" value="yes"> You may publish my feedback and display name on this website. (Optional; leaving this unchecked keeps your feedback private.)</label>
+        <p class="full feedback-intro">All feedback is held for review. Permission to publish does not mean it will be published automatically.</p>
+        <div class="full row"><button class="btn" type="submit">Submit feedback</button><span id="feedback-status" class="status" role="status" aria-live="polite"></span></div>
+      </form>
+    </details>
   </div>
 </section>
 
@@ -587,6 +607,33 @@ footer{padding:2rem 0;color:var(--muted);font-size:.95rem;text-align:center}
       });
       var note=el("p","Curriculum guidance is independently prepared by Satya Academy. School pacing, course selection and assessment requirements can vary. This is not an official board publication.","curriculum-note");content.appendChild(note);
       if(OFFICIAL_LINKS[board]){var link=el("a","View official curriculum source");link.href=OFFICIAL_LINKS[board];link.target="_blank";link.rel="noopener noreferrer";content.appendChild(link)}
+      // Show matching published feedback for this course inside the curriculum modal.
+      var matching=window.SatyaTestimonials ? window.SatyaTestimonials.forCourse(key) : [];
+      var testimonialBlock=el("section","","course-testimonials");
+      testimonialBlock.appendChild(el("h4","Student feedback"));
+      if(matching.length){
+        matching.forEach(function(item){
+          var quote=el("blockquote","“"+item.feedback+"”");
+          var author=el("p",item.displayName+" · "+item.rating+"/5 · "+item.course);
+          testimonialBlock.appendChild(quote);testimonialBlock.appendChild(author);
+        });
+      } else {
+        testimonialBlock.appendChild(el("p","No published feedback for this course yet."));
+      }
+      content.appendChild(testimonialBlock);
+      // Course-matched published feedback (only approved submissions from the public API).
+      var matching=window.SatyaTestimonials ? window.SatyaTestimonials.forCourse(key) : [];
+      var testimonialBlock=el("section","","course-testimonials");
+      testimonialBlock.appendChild(el("h4","Student feedback"));
+      if(matching.length){
+        matching.forEach(function(item){
+          testimonialBlock.appendChild(el("blockquote","“"+item.feedback+"”"));
+          testimonialBlock.appendChild(el("p",item.displayName+" · "+item.rating+"/5 · "+item.course));
+        });
+      } else {
+        testimonialBlock.appendChild(el("p","No published feedback for this course yet."));
+      }
+      content.appendChild(testimonialBlock);
       var foot=el("div","","cur-foot"),a=el("a","Book a free trial lesson","btn");a.href="#contact";
       a.addEventListener("click",function(){d.close()});foot.appendChild(a);content.appendChild(foot);
     }
@@ -597,6 +644,112 @@ footer{padding:2rem 0;color:var(--muted);font-size:.95rem;text-align:center}
   document.querySelectorAll("[data-course]").forEach(function(b){b.addEventListener("click",function(){open(b.textContent.trim())})});
   document.getElementById("cur-close").addEventListener("click",function(){d.close()});
   d.addEventListener("click",function(e){if(e.target===d)d.close()});
+})();
+</script>
+
+<!-- Satya Academy testimonials carousel and feedback workflow -->
+
+<script>
+(function () {
+  "use strict";
+  const list = document.getElementById("testimonial-list");
+  const controls = document.getElementById("testimonial-controls");
+  if (!list) return;
+  let records = [];
+  let page = 0;
+  const pageSize = 3;
+  const esc = (value) => String(value ?? "").replace(/[&<>"']/g, ch => ({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+  })[ch]);
+  window.SatyaTestimonials = {
+    forCourse: function (course) {
+      const norm = value => String(value || "").toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
+      const target = norm(course);
+      return records.filter(item => norm(item.course) === target);
+    }
+  };
+  function render() {
+    list.textContent = "";
+    if (!records.length) {
+      const empty = document.createElement("p");
+      empty.className = "testimonial-state";
+      empty.textContent = "Student and parent feedback will appear here after it has been approved for publication.";
+      list.appendChild(empty);
+      controls.hidden = true;
+      return;
+    }
+    const pages = Math.ceil(records.length / pageSize);
+    page = Math.min(page, pages - 1);
+    records.slice(page * pageSize, (page + 1) * pageSize).forEach(item => {
+      const figure = document.createElement("figure");
+      figure.className = "quote";
+      const stars = document.createElement("div");
+      stars.className = "testimonial-stars";
+      stars.setAttribute("aria-label", item.rating + " out of 5 stars");
+      stars.textContent = "★".repeat(item.rating) + "☆".repeat(5 - item.rating);
+      const quote = document.createElement("blockquote");
+      quote.textContent = "“" + item.feedback + "”";
+      const caption = document.createElement("figcaption");
+      caption.textContent = item.displayName;
+      const course = document.createElement("span");
+      course.textContent = item.course + " · " + item.role;
+      caption.appendChild(course);
+      if (item.verified) {
+        const verified = document.createElement("small");
+        verified.className = "verified-label";
+        verified.textContent = "Verified student";
+        caption.appendChild(verified);
+      }
+      figure.append(stars, quote, caption);
+      list.appendChild(figure);
+    });
+    controls.hidden = pages <= 1;
+    const pageLabel = document.getElementById("testimonial-page");
+    if (pageLabel) pageLabel.textContent = (page + 1) + " / " + pages;
+    const prev = document.getElementById("testimonial-prev");
+    const next = document.getElementById("testimonial-next");
+    if (prev) prev.disabled = page === 0;
+    if (next) next.disabled = page >= pages - 1;
+  }
+  async function load() {
+    try {
+      const response = await fetch("/.netlify/functions/testimonials", {headers:{"Accept":"application/json"}});
+      if (!response.ok) throw new Error("Unable to load testimonials");
+      const data = await response.json();
+      records = Array.isArray(data.testimonials) ? data.testimonials : [];
+      render();
+    } catch (error) {
+      list.textContent = "";
+      const state = document.createElement("p");
+      state.className = "testimonial-state";
+      state.textContent = "Testimonials are temporarily unavailable. Please try again later.";
+      list.appendChild(state);
+    } finally {
+      list.setAttribute("aria-busy", "false");
+    }
+  }
+  document.getElementById("testimonial-prev")?.addEventListener("click", () => {page--;render();});
+  document.getElementById("testimonial-next")?.addEventListener("click", () => {page++;render();});
+  const form = document.getElementById("feedback");
+  form?.addEventListener("submit", async event => {
+    event.preventDefault();
+    const status = document.getElementById("feedback-status");
+    const button = form.querySelector('button[type="submit"]');
+    status.textContent = "Submitting…";
+    button.disabled = true;
+    try {
+      const response = await fetch(form.action, {method:"POST",body:new FormData(form),headers:{"Accept":"application/json"}});
+      const data = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(data.error || "Submission failed");
+      form.reset();
+      status.textContent = "Thank you. Your feedback has been received and will be reviewed before publication.";
+    } catch (error) {
+      status.textContent = error.message || "Could not submit feedback. Please try again.";
+    } finally {
+      button.disabled = false;
+    }
+  });
+  load();
 })();
 </script>
 
