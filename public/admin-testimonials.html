@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Testimonials Administration | Satya Academy</title>
+<style>
+:root{font-family:system-ui,sans-serif;color:#102544;background:#f3f6fb;--navy:#071b36;--blue:#0f47a1;--orange:#e8531d;--line:#d3deee}
+*{box-sizing:border-box}body{margin:0}.wrap{max-width:1200px;margin:auto;padding:26px 20px}header{display:flex;justify-content:space-between;align-items:center;gap:16px}
+h1{margin:24px 0 8px}p{color:#5c6e88}.identity{padding:12px;background:white;border:1px solid var(--line);border-radius:10px}
+.metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin:22px 0}
+.metric{background:white;border:1px solid var(--line);border-radius:12px;padding:15px}.metric b{display:block;font-size:26px;color:var(--navy)}
+.filters{display:flex;flex-wrap:wrap;gap:10px;margin:20px 0}input,select,button{font:inherit;padding:9px 11px;border-radius:8px;border:1px solid var(--line)}
+button{cursor:pointer;background:var(--navy);color:white;border-color:var(--navy)}button.secondary{background:white;color:var(--navy)}button.danger{background:#9b2226;border-color:#9b2226}
+.tablewrap{overflow:auto;background:white;border-radius:12px;border:1px solid var(--line)}table{width:100%;border-collapse:collapse;min-width:900px}th,td{text-align:left;padding:12px;border-bottom:1px solid var(--line);vertical-align:top}th{background:#e9eff7}
+.status{font-weight:700;text-transform:capitalize}.actions{display:flex;flex-wrap:wrap;gap:6px}.actions button{font-size:12px}
+dialog{border:0;border-radius:14px;max-width:600px;width:calc(100% - 28px);padding:22px;box-shadow:0 15px 50px #071b3650}dialog::backdrop{background:#071b3677}
+dialog label{display:grid;gap:5px;margin:12px 0}textarea{width:100%;min-height:140px;font:inherit;padding:10px;border:1px solid var(--line);border-radius:8px}
+.notice{padding:12px;background:#fff;border-left:4px solid var(--orange);margin:18px 0}
+@media(max-width:650px){header{align-items:flex-start;flex-direction:column}}
+</style>
+</head>
+<body><main class="wrap">
+<header><a href="/" style="font-weight:800;color:inherit;text-decoration:none">Satya Academy</a><div class="identity"><button id="login">Log in</button><button id="logout" class="secondary" hidden>Log out</button></div></header>
+<h1>Testimonials management</h1>
+<p>Review student and parent feedback. Only testimonials with explicit publication permission can be approved.</p>
+<div class="notice" id="notice" role="status" aria-live="polite">Sign in with your authorized Netlify Identity administrator account to continue.</div>
+<div id="dashboard" hidden>
+<div class="metrics" id="metrics"></div>
+<div class="filters">
+<input id="search" type="search" placeholder="Search student name">
+<select id="courseFilter"><option value="">All courses</option></select>
+<select id="ratingFilter"><option value="">All ratings</option><option value="5">5 stars</option><option value="4">4 stars</option><option value="3">3 stars</option><option value="2">2 stars</option><option value="1">1 star</option></select>
+<select id="statusFilter"><option value="">All statuses</option><option>pending</option><option>published</option><option>rejected</option></select>
+<button id="refresh">Refresh</button>
+</div>
+<div class="tablewrap"><table><thead><tr><th>Submitted</th><th>Student</th><th>Course</th><th>Rating</th><th>Feedback</th><th>Permission</th><th>Status</th><th>Actions</th></tr></thead><tbody id="rows"></tbody></table></div>
+</div>
+<dialog id="editor"><form method="dialog"><h2>Edit testimonial</h2><label>Display name<input id="edit-name" maxlength="100" required></label><label>Feedback<textarea id="edit-feedback" maxlength="3000" required></textarea></label><div style="display:flex;gap:8px;justify-content:flex-end"><button class="secondary" value="cancel">Cancel</button><button id="save-edit" value="save">Save changes</button></div></form></dialog>
+<script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+<script>
+(function(){
+ const $=id=>document.getElementById(id);let items=[],editing=null;
+ const notice=t=>$("notice").textContent=t;
+ const admin=()=>window.netlifyIdentity&&window.netlifyIdentity.currentUser();
+ async function request(method="GET",payload=null,query=""){
+  const user=admin();if(!user)throw new Error("Please sign in again.");
+  const token=await user.jwt();
+  const response=await fetch("/.netlify/functions/admin-testimonials"+query,{method,headers:{"Authorization":"Bearer "+token,"Content-Type":"application/json","Accept":"application/json"},body:payload?JSON.stringify(payload):undefined});
+  const data=await response.json().catch(()=>({}));
+  if(!response.ok)throw new Error(data.error||"Request failed.");
+  return data;
+ }
+ function metric(label,value){const card=document.createElement("div");card.className="metric";const b=document.createElement("b");b.textContent=value??"—";const span=document.createElement("span");span.textContent=label;card.append(b,span);return card}
+ function renderStats(stats){const root=$("metrics");root.textContent="";root.append(metric("Total submissions",stats.totalSubmissions),metric("Published",stats.published),metric("Pending approvals",stats.pending),metric("Rejected",stats.rejected),metric("Average published rating",stats.averageRating??"—"));const filter=$("courseFilter");const existing=filter.value;filter.textContent="";const all=document.createElement("option");all.value="";all.textContent="All courses";filter.append(all);Object.keys(stats.courseRatings||{}).sort().forEach(name=>{const op=document.createElement("option");op.value=name;op.textContent=name;filter.append(op)});filter.value=existing}
+ function addButton(parent,label,action,kind){const b=document.createElement("button");b.textContent=label;b.className=kind||"";b.addEventListener("click",action);parent.append(b)}
+ function renderRows(){const root=$("rows");root.textContent="";items.forEach(item=>{const tr=document.createElement("tr");const vals=[new Date(item.submittedAt).toLocaleString(),item.displayName||item.name,item.course,item.rating+"/5",item.feedback,item.publishPermission?"Yes":"No",item.status];vals.forEach((v,i)=>{const td=document.createElement("td");td.textContent=v;if(i===6)td.className="status";tr.append(td)});const actions=document.createElement("td"),group=document.createElement("div");group.className="actions";
+ if(item.status!=="published"&&item.publishPermission)addButton(group,"Approve",()=>act(item,"approve"));
+ if(item.status!=="rejected")addButton(group,"Reject",()=>act(item,"reject"),"secondary");
+ if(item.status==="published")addButton(group,"Unpublish",()=>act(item,"unpublish"),"secondary");
+ addButton(group,"Edit",()=>edit(item),"secondary");addButton(group,"Delete",()=>act(item,"delete"),"danger");
+ actions.append(group);tr.append(actions);root.append(tr)})}
+ async function load(){try{const qs=new URLSearchParams();if($("search").value)qs.set("q",$("search").value);if($("courseFilter").value)qs.set("course",$("courseFilter").value);if($("ratingFilter").value)qs.set("rating",$("ratingFilter").value);if($("statusFilter").value)qs.set("status",$("statusFilter").value);const data=await request("GET",null,qs.toString()?"?"+qs.toString():"");items=data.testimonials||[];renderStats(data.stats||{});renderRows();$("dashboard").hidden=false;notice("Signed in. Testimonial records loaded.");}catch(e){notice(e.message)}}
+ async function act(item,action){if(action==="delete"&&!confirm("Permanently delete this feedback submission? This cannot be undone."))return;try{await request("POST",{id:item.id,action});await load()}catch(e){notice(e.message)}}
+ function edit(item){editing=item;$("edit-name").value=item.displayName||item.name;$("edit-feedback").value=item.feedback;$("editor").showModal()}
+ $("save-edit").addEventListener("click",async e=>{e.preventDefault();if(!editing)return;try{await request("POST",{id:editing.id,action:"edit",displayName:$("edit-name").value,feedback:$("edit-feedback").value});$("editor").close();await load()}catch(err){notice(err.message)}});
+ $("login").addEventListener("click",()=>window.netlifyIdentity&&window.netlifyIdentity.open("login"));
+ $("logout").addEventListener("click",()=>window.netlifyIdentity&&window.netlifyIdentity.logout());
+ ["search","courseFilter","ratingFilter","statusFilter"].forEach(id=>$(id).addEventListener(id==="search"?"input":"change",()=>load()));
+ $("refresh").addEventListener("click",load);
+ if(window.netlifyIdentity){window.netlifyIdentity.on("init",user=>{if(user){$("login").hidden=true;$("logout").hidden=false;load()}else{$("dashboard").hidden=true;$("login").hidden=false;$("logout").hidden=true}});window.netlifyIdentity.on("login",user=>{window.netlifyIdentity.close();$("login").hidden=true;$("logout").hidden=false;load()});window.netlifyIdentity.on("logout",()=>{$("dashboard").hidden=true;$("login").hidden=false;$("logout").hidden=true;notice("Signed out.")});window.netlifyIdentity.init()}
+})();
+</script>
+</main></body></html>
