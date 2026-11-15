@@ -277,21 +277,37 @@ footer{padding:2rem 0;color:var(--muted);font-size:.95rem;text-align:center}
   <div class="wrap contact-grid">
     <div>
       <h2>Book a free trial lesson</h2>
-      <p>Tell me a bit about the student and I’ll reply within one working day with available times.</p>
+      <p>Request a free 30-minute mathematics trial. Share the student’s details and preferred availability; I’ll contact you within one working day to confirm a suitable time.</p>
       <p><strong>Email:</strong> <a href="mailto:satya@satyaacademy.org">satya@satyaacademy.org</a><br><strong>Phone / WhatsApp:</strong> <a href="https://wa.me/919848383468">+91 98483 83468</a></p>
       <a class="btn wa" href="https://wa.me/919848383468?text=Hello%2C%20I%E2%80%99d%20like%20to%20book%20a%20free%20trial%20math%20lesson." target="_blank" rel="noopener">Chat on WhatsApp</a>
     </div>
-    <form id="f" novalidate>
-      <label>Your name<input name="name" required autocomplete="name"></label>
-      <label>Email<input name="email" type="email" required autocomplete="email"></label>
+    <form id="trial-booking" name="trial-booking" method="POST" action="/thank-you.html" data-netlify="true" netlify-honeypot="bot-field">
+      <input type="hidden" name="form-name" value="trial-booking">
+      <p style="position:absolute;left:-10000px;width:1px;height:1px;overflow:hidden" aria-hidden="true"><label>Leave this field empty <input name="bot-field" tabindex="-1" autocomplete="off"></label></p>
+      <label>Parent / guardian name<input name="parent_name" required autocomplete="name" maxlength="100"></label>
+      <label>Parent / guardian email<input name="email" type="email" required autocomplete="email" maxlength="200"></label>
+      <label>WhatsApp / phone number<input name="phone" type="tel" required autocomplete="tel" placeholder="Include country code, e.g. +1 or +91" maxlength="30"></label>
+      <label>Student name (first name is enough)<input name="student_name" required maxlength="80"></label>
+      <label>Student’s grade / level<input name="grade" required placeholder="e.g. Grade 9, AP Calculus AB, University" maxlength="80"></label>
       <label>Subject
-        <select name="subject"><option>Middle school math</option><option>High school math</option><option>AP courses</option><option>College calculus and beyond</option><option>Advanced mathematics</option><option>SAT, ACT and competitive exams</option></select>
+        <select name="subject" required>
+          <option value="" selected disabled>Select a subject</option>
+          <option>Middle school mathematics</option><option>Algebra 1</option><option>Algebra 2</option><option>Geometry</option><option>Trigonometry</option><option>Precalculus</option><option>AP Precalculus</option><option>AP Calculus AB</option><option>AP Calculus BC</option><option>AP Statistics</option><option>Calculus / College mathematics</option><option>Linear Algebra</option><option>Probability and Statistics</option><option>SAT / ACT Math</option><option>IIT JEE Mathematics</option><option>Other</option>
+        </select>
       </label>
-      <label>Student’s grade<input name="grade" placeholder="e.g. Grade 9"></label>
-      <label>Anything I should know?<textarea name="msg"></textarea></label>
-      <input name="website" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px">
-      <button class="btn" type="submit">Send request</button>
-      <div class="status" id="status" role="status"></div>
+      <label>Curriculum / school board<input name="curriculum" placeholder="e.g. US Common Core, CBSE, IB, British Columbia" maxlength="100"></label>
+      <label>Preferred trial date<input name="preferred_date" type="date" required></label>
+      <label>Preferred time window
+        <select name="preferred_time" required>
+          <option value="" selected disabled>Select a time window</option>
+          <option>Morning (8 AM–12 PM)</option><option>Afternoon (12 PM–4 PM)</option><option>Evening (4 PM–8 PM)</option><option>Night (8 PM–10 PM)</option><option>Flexible – please suggest a time</option>
+        </select>
+      </label>
+      <label>Time zone<input name="timezone" required placeholder="e.g. India Standard Time (IST), US Eastern Time" maxlength="80"></label>
+      <label>Learning goals or notes<textarea name="message" placeholder="Topics to focus on, learning goals, or scheduling notes" maxlength="1500"></textarea></label>
+      <label style="display:flex;gap:.6rem;align-items:flex-start;font-weight:400;font-size:.95rem"><input type="checkbox" name="parent_consent" value="Yes" required style="margin-top:.3rem;flex:none"> <span>I am the student’s parent / guardian, or an adult student. I agree to the <a href="/privacy.html">Privacy Policy</a> and consent to Satya Academy contacting me about this trial request.</span></label>
+      <button class="btn" type="submit">Request my free 30-minute trial</button>
+      <p class="status" id="trial-note" role="status">This is a booking request, not a confirmed appointment. I’ll contact you to confirm an available time.</p>
     </form>
   </div>
 </section>
@@ -300,16 +316,8 @@ footer{padding:2rem 0;color:var(--muted);font-size:.95rem;text-align:center}
 <footer><div class="wrap">© 2026 Satya Academy</div></footer>
 
 <script>
-document.getElementById('f').addEventListener('submit',function(e){
-  e.preventDefault();
-  var f=e.target,s=document.getElementById('status');
-  if(!f.name.value.trim()||!/^\S+@\S+\.\S+$/.test(f.email.value)){s.style.color='#b3261e';s.textContent='Please add your name and a valid email address.';return}
-  s.style.color='';s.textContent='Sending…';
-  fetch('/.netlify/functions/signup',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name:f.name.value,email:f.email.value,subject:f.subject.value,grade:f.grade.value,msg:f.msg.value,website:f.website.value})})
-  .then(function(r){return r.json().then(function(j){return{ok:r.ok,j:j}})})
-  .then(function(x){if(!x.ok)throw new Error();s.textContent='Thank you! Your request is received. I will contact you within one working day.';f.reset()})
-  .catch(function(){s.style.color='#b3261e';s.textContent='Could not send your request. Please message me on WhatsApp instead.'});
-});
+// Netlify Forms handles trial-booking submissions at deploy time.
+
 </script>
 <a class="wa-float" href="https://wa.me/919848383468?text=Hello%2C%20I%E2%80%99d%20like%20to%20book%20a%20free%20trial%20math%20lesson." target="_blank" rel="noopener" aria-label="Chat on WhatsApp"><svg viewBox="0 0 32 32" width="24" height="24" fill="#fff" aria-hidden="true"><path d="M16 3C9 3 3.3 8.6 3.3 15.5c0 2.4.7 4.7 1.9 6.6L3 29l7.1-2.1c1.8 1 3.8 1.5 5.9 1.5 7 0 12.7-5.6 12.7-12.5S23 3 16 3zm0 22.8c-1.9 0-3.7-.5-5.3-1.5l-.4-.2-4.2 1.2 1.3-4-.3-.4a10.3 10.3 0 0 1-1.6-5.4C5.5 9.9 10.2 5.3 16 5.3s10.5 4.6 10.5 10.2S21.8 25.8 16 25.8zm5.700-7.600c-.3-.2-1.900-.9-2.200-1-.3-.1-.5-.2-.7.2-.2.3-.8 1-1 1.200-.2.200-.4.200-.7.1-.3-.2-1.400-.5-2.600-1.600-1-.9-1.600-1.900-1.800-2.200-.2-.3 0-.5.1-.7l.5-.6c.2-.2.2-.3.3-.5.1-.2.1-.4 0-.6-.1-.2-.7-1.700-1-2.300-.3-.6-.5-.5-.7-.5h-.6c-.2 0-.6.1-.9.4-.3.3-1.200 1.200-1.200 2.800s1.200 3.200 1.400 3.400c.2.2 2.400 3.700 5.800 5.100 3.400 1.400 3.400.9 4 .9.6-.1 1.900-.8 2.200-1.500.3-.8.3-1.400.2-1.500-.1-.1-.3-.2-.6-.4z"/></svg><span>WhatsApp</span></a>
 <style>
