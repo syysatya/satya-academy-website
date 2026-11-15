@@ -485,7 +485,10 @@ document.getElementById('f').addEventListener('submit',function(e){
     "ACT":"https://www.act.org/content/act/en/products-and-services/the-act/test-preparation/description-of-math-test.html"
   };
   function guideFromUnits(title,board,units,notice){
-    return {title:title,sub:board+" · "+notice,domains:units.map(function(u){return {n:u[0],i:[u[1],"Learning objective: explain concepts, represent relationships, solve unfamiliar problems and justify conclusions.","Assessment: short diagnostic, guided practice, application problems and a unit mastery check."]}})};
+    return {title:title,sub:board+" · "+notice,domains:units.map(function(u){
+      var topics=(title==="AP Precalculus"&&u[1].indexOf("CED topics:")===0)?u[1].replace(/^CED topics:\\s*/,"").split(/;\\s*/):[u[1]];
+      return {n:u[0],i:topics.concat(["Learning objective: explain concepts, represent relationships, solve unfamiliar problems and justify conclusions.","Assessment: short diagnostic, guided practice, application problems and a unit mastery check."])};
+    })};
   }
   function boardOptions(key){
     if(AP_DETAIL[key])return ["College Board AP"];
@@ -538,7 +541,7 @@ document.getElementById('f').addEventListener('submit',function(e){
       if(m){var target=levels.find(function(o){return o==="Class "+m[1]||o.indexOf("Grade "+m[1])===0});if(target)levelSelect.value=target}
       else if(boardSelect.value==="CBSE / NCERT"){levelSelect.value=/Precalculus|Trigonometry|Algebra 2/.test(key)?"Class 11":"Class 9"}
       else if(boardSelect.value==="British Columbia"){levelSelect.value=/Precalculus|Trigonometry|Algebra 2/.test(key)?"Pre-Calculus 11–12":"Mathematics 10"}
-      levelLabel.hidden=!levels.length;
+      levelLabel.hidden=!levels.length||boardSelect.value==="College Board AP";
       render();
     }
     function render(){
