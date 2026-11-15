@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Approved student and parent feedback about Satya Academy mathematics tutoring.">
+<title>Student Testimonials | Satya Academy</title>
+<style>
+:root{font-family:system-ui,sans-serif;color:#0c1d3a;background:#f3f6fb;--navy:#071b36;--blue:#0f47a1;--orange:#e8531d;--line:#d3deee}
+*{box-sizing:border-box}body{margin:0;line-height:1.6}.wrap{max-width:1080px;margin:auto;padding:32px 20px}
+header{display:flex;justify-content:space-between;align-items:center;gap:20px;border-bottom:1px solid var(--line);padding-bottom:18px}
+a{color:var(--blue)}.brand{font-weight:800;text-decoration:none;color:var(--navy);font-size:20px}
+h1{font-size:clamp(32px,5vw,48px);line-height:1.1;color:var(--navy);margin:42px 0 10px}
+.lead{color:#4a5d7a;max-width:680px}
+.filters{display:flex;flex-wrap:wrap;gap:10px;margin:26px 0}
+select,input{font:inherit;padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:white;color:inherit}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:18px}
+.card{padding:22px;background:var(--navy);color:white;border-radius:16px;border-top:5px solid var(--orange);display:flex;flex-direction:column;gap:14px}
+.card blockquote{margin:0;font-size:18px}.card footer{margin-top:auto;color:#9dbbe5}.stars{color:#ffd278;letter-spacing:2px}
+.state{color:#52647d;padding:20px 0}
+@media(max-width:600px){header{align-items:flex-start;flex-direction:column}}
+</style>
+</head>
+<body><main class="wrap">
+<header><a class="brand" href="/">Satya Academy</a><a href="/#reviews">← Back to homepage</a></header>
+<h1>Student and parent testimonials</h1>
+<p class="lead">Honest feedback shared with permission and reviewed before publication. Only approved testimonials appear here.</p>
+<div class="filters"><label>Course <select id="course"><option value="">All courses</option></select></label><label>Minimum rating <select id="rating"><option value="">Any rating</option><option value="5">5 stars</option><option value="4">4+ stars</option><option value="3">3+ stars</option></select></label></div>
+<div id="items" class="grid" aria-live="polite" aria-busy="true"><p class="state">Loading testimonials…</p></div>
+<script>
+(async function(){
+ const container=document.getElementById("items"),course=document.getElementById("course"),rating=document.getElementById("rating");
+ let all=[];
+ const el=(tag,cls,text)=>{const n=document.createElement(tag);if(cls)n.className=cls;if(text)n.textContent=text;return n};
+ function render(){
+  const items=all.filter(x=>(!course.value||x.course===course.value)&&(!rating.value||x.rating>=Number(rating.value)));
+  container.textContent="";
+  if(!items.length){container.appendChild(el("p","state","No published testimonials match this filter yet."));return}
+  items.forEach(item=>{
+   const article=el("article","card"),stars=el("div","stars","★".repeat(item.rating)+"☆".repeat(5-item.rating));
+   stars.setAttribute("aria-label",item.rating+" out of 5 stars");
+   const quote=el("blockquote","","“"+item.feedback+"”"),foot=el("footer","",item.displayName+" · "+item.course+" · "+item.role);
+   article.append(stars,quote,foot);container.appendChild(article);
+  });
+ }
+ try{
+  const response=await fetch("/.netlify/functions/testimonials",{headers:{Accept:"application/json"}});
+  if(!response.ok)throw new Error();
+  const data=await response.json();all=Array.isArray(data.testimonials)?data.testimonials:[];
+  [...new Set(all.map(x=>x.course))].sort().forEach(name=>{const option=el("option","",name);option.value=name;course.appendChild(option)});
+  render();
+ }catch{container.textContent="";container.appendChild(el("p","state","Testimonials are temporarily unavailable. Please try again later."))}
+ finally{container.setAttribute("aria-busy","false")}
+ course.addEventListener("change",render);rating.addEventListener("change",render);
+})();
+</script>
+</main></body></html>
