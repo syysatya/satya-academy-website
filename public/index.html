@@ -621,6 +621,19 @@ footer{padding:2rem 0;color:var(--muted);font-size:.95rem;text-align:center}
         testimonialBlock.appendChild(el("p","No published feedback for this course yet."));
       }
       content.appendChild(testimonialBlock);
+      // Course-matched published feedback (only approved submissions from the public API).
+      var matching=window.SatyaTestimonials ? window.SatyaTestimonials.forCourse(key) : [];
+      var testimonialBlock=el("section","","course-testimonials");
+      testimonialBlock.appendChild(el("h4","Student feedback"));
+      if(matching.length){
+        matching.forEach(function(item){
+          testimonialBlock.appendChild(el("blockquote","“"+item.feedback+"”"));
+          testimonialBlock.appendChild(el("p",item.displayName+" · "+item.rating+"/5 · "+item.course));
+        });
+      } else {
+        testimonialBlock.appendChild(el("p","No published feedback for this course yet."));
+      }
+      content.appendChild(testimonialBlock);
       var foot=el("div","","cur-foot"),a=el("a","Book a free trial lesson","btn");a.href="#contact";
       a.addEventListener("click",function(){d.close()});foot.appendChild(a);content.appendChild(foot);
     }
