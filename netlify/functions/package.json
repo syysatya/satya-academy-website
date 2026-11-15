@@ -1,0 +1,9 @@
+{
+  "name": "satya-academy-netlify",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Satya Academy website Netlify Functions dependencies",
+  "dependencies": {
+    "@netlify/blobs": "^9.1.0"
+  }
+}
