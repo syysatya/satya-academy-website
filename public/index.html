@@ -506,7 +506,7 @@ document.getElementById('f').addEventListener('submit',function(e){
   };
   function guideFromUnits(title,board,units,notice){
     return {title:title,sub:board+" · "+notice,domains:units.map(function(u){
-      var topics=(title==="AP Precalculus"&&u[1].indexOf("CED topics:")===0)?u[1].replace(/^CED topics:\s*/,"").split(/;\s*/):[u[1]];
+      var topics=(AP_DETAIL[title]&&u[1].indexOf("CED topics:")!==0)?u[1].split(/;\s*/):[u[1]];
       return {n:u[0],i:topics.concat(["Learning objective: explain concepts, represent relationships, solve unfamiliar problems and justify conclusions.","Assessment: short diagnostic, guided practice, application problems and a unit mastery check."])};
     })};
   }
