@@ -242,7 +242,7 @@ footer{padding:2rem 0;color:var(--muted);font-size:.95rem;text-align:center}
     </div>
     <div class="facts">
       <div class="fact"><b>15+ years</b><span>teaching experience</span></div>
-      <div class="fact"><b>Top-rated</b><span>CodeYoung mentor</span></div>
+      <a class="fact fact-link" href="https://epicenter.codeyoung.com/#/mentors/5770" target="_blank" rel="noopener noreferrer" aria-label="View Satya’s top-rated CodeYoung mentor profile"><b>Top-rated</b><span>CodeYoung mentor <span aria-hidden="true">↗</span></span></a>
       <div class="fact"><b>Certified</b><span>Cuemath teacher</span></div>
     </div>
   </div>
@@ -416,6 +416,10 @@ nav a.student-login{display:inline-flex;align-items:center;gap:.45rem;margin-lef
 nav a.student-login:hover{background:#d94b18;color:#fff;transform:translateY(-2px);box-shadow:0 9px 22px rgba(0,0,0,.2)}
 nav a.student-login span{font-size:1rem}
 @media(max-width:640px){nav a.student-login{margin:.25rem 0;padding:.5rem .85rem}}
+
+.fact-link{display:block;color:inherit;text-decoration:none;cursor:pointer;transition:transform .2s ease,box-shadow .2s ease,border-color .2s ease}
+.fact-link:hover,.fact-link:focus-visible{transform:translateY(-3px);border-color:var(--pencil);box-shadow:0 12px 26px rgba(7,27,54,.12);outline-offset:3px}
+.fact-link span span{display:inline-block;margin-left:.25rem;color:var(--pencil);font-weight:800}
 </style>
 <dialog class="cur" id="cur" aria-labelledby="cur-title">
   <div class="cur-head">
