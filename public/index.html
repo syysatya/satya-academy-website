@@ -193,6 +193,15 @@ footer{padding:2rem 0;color:var(--muted);font-size:.95rem;text-align:center}
   </div>
 </div>
 
+<div class="trust-strip" aria-label="Satya Academy highlights">
+  <div class="wrap trust-grid">
+    <div><span class="trust-icon" aria-hidden="true">✦</span><strong>15+ years</strong><small>teaching experience</small></div>
+    <div><span class="trust-icon" aria-hidden="true">∑</span><strong>Math 6 to University</strong><small>wide subject coverage</small></div>
+    <div><span class="trust-icon" aria-hidden="true">◎</span><strong>Personalized 1:1</strong><small>lessons built around the learner</small></div>
+    <div><span class="trust-icon" aria-hidden="true">✓</span><strong>Free 30-minute trial</strong><small>meet before you commit</small></div>
+  </div>
+</div>
+
 <main>
 <section id="subjects">
   <div class="wrap">
@@ -223,9 +232,9 @@ footer{padding:2rem 0;color:var(--muted);font-size:.95rem;text-align:center}
 
 <section id="about">
   <div class="wrap about">
-    <div class="about-portrait"><img src="https://res.cloudinary.com/jk2nuhai/image/upload/v1794773962/Professional_Indian_Man_in_Navy_Blazer_1.png" alt="Portrait of Satya, founder of Satya Academy" loading="lazy"></div>
+    <a class="about-portrait" href="https://www.linkedin.com/in/satyannarayana-yedla-3a663743/" target="_blank" rel="noopener noreferrer" aria-label="View Satya’s LinkedIn profile"><img src="https://res.cloudinary.com/jk2nuhai/image/upload/v1794773962/Professional_Indian_Man_in_Navy_Blazer_1.png" alt="View Satya’s LinkedIn profile" loading="lazy"><span class="portrait-link-hint">Connect on LinkedIn <span aria-hidden="true">↗</span></span></a>
     <div>
-      <h2>Meet Satya, Founder &amp; Mathematics Educator</h2><p><a class="btn" href="https://www.linkedin.com/in/satyannarayana-yedla-3a663743/" target="_blank" rel="noopener noreferrer">View LinkedIn Profile</a></p>
+      <h2>Meet Satya, Founder &amp; Mathematics Educator</h2>
       <p>I hold an M.Sc. in Mathematics and bring more than 15 years of teaching experience to Satya Academy. I’m a former Assistant Professor, a top-rated mentor at CodeYoung, and a Cuemath-certified teacher.</p>
       <p>My teaching combines strong subject knowledge with clear explanations, carefully sequenced examples, and a supportive learning environment. I help students build confidence from middle-school mathematics through advanced university topics, while preparing them for demanding AP and SAT examinations.</p>
       <p>Students I have guided in AP courses have earned scores of 4–5, and my SAT Math students have achieved scores in the 780–800 range. These are examples of student outcomes, not guaranteed results; individual progress depends on each learner’s preparation and effort.</p>
@@ -326,6 +335,80 @@ footer{padding:2rem 0;color:var(--muted);font-size:.95rem;text-align:center}
 .curriculum-unit{margin:0 0 16px}
 .curriculum-note{font-size:.85rem;color:#596579;margin:14px 0}
 @media(max-width:520px){.curriculum-controls{display:block}.curriculum-controls label{margin:0 0 12px}.curriculum-controls select{width:100%;min-width:0}}
+
+/* Satya Academy visual refresh — accessible, responsive, lightweight */
+:root{--pencil:#ed5a24;--royal:#102e59;--board:#071a34}
+body{letter-spacing:.002em}
+.wrap{max-width:1160px}
+section{padding:clamp(3.5rem,7vw,5.5rem) 0}
+.hero{position:relative;isolation:isolate;overflow:hidden;background:radial-gradient(ellipse at 82% 12%,rgba(43,104,180,.35),transparent 38%),linear-gradient(135deg,#06152b 0%,#0b2850 58%,#071a34 100%);border-radius:0 0 34px 34px}
+.hero::before,.hero::after{content:"";position:absolute;z-index:-1;pointer-events:none;border:1px solid rgba(151,190,244,.15);border-radius:50%}
+.hero::before{width:520px;height:520px;right:-150px;top:-240px;box-shadow:0 0 0 34px rgba(151,190,244,.035),0 0 0 78px rgba(151,190,244,.025)}
+.hero::after{width:340px;height:340px;right:14%;bottom:-275px;box-shadow:0 0 0 28px rgba(237,90,36,.07),0 0 0 65px rgba(237,90,36,.035)}
+.hero-grid{position:relative;gap:clamp(2rem,5vw,4.5rem);padding:clamp(3rem,7vw,5.75rem) 0}
+.hero h1{max-width:13ch;font-size:clamp(2.65rem,6vw,4.65rem);line-height:1.02;letter-spacing:-.045em}
+.hero h1::after{content:"";display:block;width:5rem;height:5px;margin-top:1.15rem;border-radius:99px;background:var(--pencil)}
+.hero p{max-width:54ch;color:#c2d7f5;font-size:clamp(1.05rem,1.5vw,1.22rem)}
+.hero .actions{gap:.85rem}
+.hero .btn{box-shadow:0 8px 22px rgba(0,0,0,.16)}
+.board{position:relative;overflow:hidden;min-height:260px;display:flex;flex-direction:column;justify-content:center;border:1px solid rgba(155,194,245,.28);border-radius:26px;padding:clamp(1.4rem,3vw,2.2rem);background:linear-gradient(145deg,rgba(17,57,105,.94),rgba(8,30,59,.92));box-shadow:0 24px 60px rgba(0,0,0,.25),inset 0 1px rgba(255,255,255,.08)}
+.board::before{content:"π  ∑  √  ∞";position:absolute;right:1rem;top:.2rem;color:rgba(183,211,249,.12);font:800 clamp(2rem,5vw,3.5rem) "Bricolage Grotesque",sans-serif;letter-spacing:.15em;pointer-events:none}
+.board .line{position:relative;z-index:1;font-size:clamp(1rem,2vw,1.35rem)}
+.trust-strip{position:relative;margin-top:-1px;background:var(--surface);border-bottom:1px solid var(--line);box-shadow:0 12px 30px rgba(7,27,54,.045)}
+.trust-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;padding-top:1.4rem;padding-bottom:1.4rem}
+.trust-grid>div{display:grid;grid-template-columns:2.5rem 1fr;column-gap:.7rem;align-items:center}
+.trust-icon{grid-row:span 2;display:grid;place-items:center;width:2.35rem;height:2.35rem;border-radius:13px;background:rgba(237,90,36,.11);color:var(--pencil);font-size:1.25rem;font-weight:800}
+.trust-grid strong{font:700 1rem "Bricolage Grotesque",sans-serif}
+.trust-grid small{color:var(--muted);font-size:.82rem;line-height:1.3}
+#subjects{background:linear-gradient(180deg,var(--bg),var(--surface) 100%)}
+#subjects h2{max-width:22ch}
+.subjects{gap:1.1rem}
+.subject{position:relative;overflow:hidden;border:1px solid var(--line);border-left:0;border-radius:20px;padding:1.5rem 1.35rem 1.35rem 1.5rem;box-shadow:0 5px 18px rgba(7,27,54,.045);transition:transform .22s ease,box-shadow .22s ease,border-color .22s ease}
+.subject::before{content:"";position:absolute;inset:0 auto 0 0;width:5px;background:linear-gradient(180deg,var(--pencil),#f5a14a)}
+.subject::after{content:"";position:absolute;right:-24px;top:-28px;width:88px;height:88px;border:1px solid var(--line);border-radius:50%;box-shadow:0 0 0 12px rgba(15,71,161,.025),0 0 0 25px rgba(15,71,161,.02);pointer-events:none}
+.subject:hover{transform:translateY(-4px);box-shadow:0 16px 32px rgba(7,27,54,.1);border-color:rgba(237,90,36,.45)}
+.subject h3{position:relative;z-index:1;padding-right:2rem}
+.subject li{transition:background .18s,border-color .18s}
+.subject li.has button:focus-visible{outline-offset:-3px}
+.steps{gap:1.5rem}
+.steps li{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:4rem 1.25rem 1.35rem;box-shadow:0 5px 18px rgba(7,27,54,.04)}
+.steps li::before{top:1rem;left:1.2rem;width:2.35rem;height:2.35rem;background:linear-gradient(135deg,var(--royal),#2764ad);box-shadow:0 5px 12px rgba(15,71,161,.2)}
+#how{background:var(--surface)!important}
+.about{align-items:center;gap:clamp(2rem,5vw,4.5rem)}
+.about-portrait{position:relative;display:block;max-width:420px;margin:auto;text-decoration:none;border-radius:28px;overflow:hidden;box-shadow:0 24px 55px rgba(7,27,54,.18);outline-offset:5px}
+.about-portrait img{width:100%;max-width:none;aspect-ratio:4/4.4;object-fit:cover;object-position:center 28%;border:0;border-radius:28px;transition:transform .45s ease,filter .35s ease}
+.about-portrait:hover img{transform:scale(1.035);filter:saturate(1.05)}
+.portrait-link-hint{position:absolute;left:1rem;right:1rem;bottom:1rem;display:flex;justify-content:space-between;align-items:center;padding:.8rem 1rem;border:1px solid rgba(255,255,255,.25);border-radius:14px;background:rgba(7,27,54,.78);backdrop-filter:blur(10px);color:#fff;font-weight:600;opacity:0;transform:translateY(8px);transition:opacity .2s,transform .2s}
+.about-portrait:hover .portrait-link-hint,.about-portrait:focus-visible .portrait-link-hint{opacity:1;transform:none}
+.about h2{max-width:18ch}
+.facts{grid-column:1/-1;grid-template-columns:repeat(3,1fr);gap:1.25rem}
+.fact{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:1rem 1.1rem;border-top:3px solid var(--pencil)}
+.reviews{background:radial-gradient(ellipse at 90% 0%,rgba(43,104,180,.28),transparent 38%),linear-gradient(135deg,#071a34,#0b2850)}
+.reviews p.lead{max-width:65ch;color:#c2d7f5}
+.fb{max-width:900px;gap:1.1rem}
+.fb label{color:#f3f7ff}
+.fb input:not([type=checkbox]),.fb select,.fb textarea,#trial-booking input:not([type=checkbox]),#trial-booking select,#trial-booking textarea{width:100%;min-height:48px;border:1px solid #597397;border-radius:12px;padding:.75rem .9rem;background:#fff;color:#14233d;font:inherit}
+.fb textarea,#trial-booking textarea{min-height:120px;resize:vertical}
+.fb .check{color:#d5e3f8}
+.fb .check input,#trial-booking input[type=checkbox]{width:18px;height:18px;accent-color:var(--pencil);flex:none}
+.reviews .btn{box-shadow:0 8px 20px rgba(0,0,0,.2)}
+#pricing{background:linear-gradient(180deg,var(--surface),var(--bg))!important}
+#pricing .wrap{padding:clamp(1.5rem,4vw,3rem);border:1px solid var(--line);border-radius:26px;background:var(--surface);box-shadow:0 16px 40px rgba(7,27,54,.06)}
+.contact{background:linear-gradient(135deg,#071a34,#0b2850);color:#fff}
+.contact h2{color:#fff}
+.contact p{color:#c2d7f5}
+.contact-grid{display:grid;grid-template-columns:.85fr 1.15fr;gap:clamp(2rem,5vw,4rem);align-items:start}
+#trial-booking{display:grid;grid-template-columns:1fr 1fr;gap:1rem;padding:clamp(1.25rem,3vw,2rem);border:1px solid rgba(255,255,255,.18);border-radius:24px;background:rgba(255,255,255,.07);box-shadow:0 20px 55px rgba(0,0,0,.18)}
+#trial-booking label{display:grid;gap:.35rem;color:#f3f7ff;font-weight:600}
+#trial-booking label:has(textarea),#trial-booking label:has(select[name=subject]),#trial-booking label:has(input[name=timezone]),#trial-booking label:has(input[name=preferred_date]),#trial-booking label:has(input[type=checkbox]){grid-column:1/-1}
+#trial-booking p.status{grid-column:1/-1;color:#c2d7f5}
+#trial-booking button{justify-self:start}
+footer{padding:2rem 0;background:#06152b;color:#d5e3f8}
+.wa-float{box-shadow:0 8px 24px rgba(0,0,0,.28);transition:transform .2s}
+.wa-float:hover{transform:translateY(-3px)}
+@media(max-width:900px){.trust-grid{grid-template-columns:repeat(2,1fr)}.contact-grid{grid-template-columns:1fr}.about{gap:2rem}}
+@media(max-width:640px){.hero-grid{grid-template-columns:1fr;gap:2rem;padding:2.5rem 0 3rem}.hero h1{font-size:clamp(2.35rem,11vw,3.25rem)}.board{min-height:220px}.trust-grid{gap:.9rem}.trust-grid>div{grid-template-columns:2.1rem 1fr}.trust-icon{width:2rem;height:2rem}.facts{grid-template-columns:1fr}.about-portrait{max-width:340px;width:100%}.portrait-link-hint{opacity:1;transform:none}.contact-grid{gap:2rem}#trial-booking{grid-template-columns:1fr}#trial-booking label{grid-column:1/-1}.wrap{padding-left:1rem;padding-right:1rem}nav a{margin:0;padding:.35rem .55rem;font-size:.92rem}}
+@media(prefers-reduced-motion:reduce){.subject,.about-portrait img,.portrait-link-hint,.wa-float{transition:none!important}.subject:hover,.wa-float:hover{transform:none}}
 </style>
 <dialog class="cur" id="cur" aria-labelledby="cur-title">
   <div class="cur-head">
