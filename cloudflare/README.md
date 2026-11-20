@@ -1,26 +1,29 @@
-# Satya Academy Cloudflare backend (Phase 2)
+# Satya Academy Cloudflare backend (staging)
 
-This is a standalone Worker API, intentionally staged separately from the live site.
+Worker API and static assets for staging. Keep the production domain/DNS unchanged until testing is complete.
 
-## Endpoints
-- POST /api/trial — store trial lesson requests in D1
-- POST /api/feedback — store feedback in D1
-- OPTIONS — CORS preflight
+## Routes
+- POST /api/trial
+- POST /api/feedback
+- OPTIONS preflight for API routes
+- Other paths are served from the `public/` static asset directory
 
-## Security
-- Cloudflare Turnstile server-side verification is mandatory.
-- API origins are restricted to Satya Academy's domain.
-- Inputs are validated and length-limited.
-- A honeypot field is included.
-- No public read endpoint or admin endpoint is included in this stage.
+## Configuration
+- Wrangler configuration: `wrangler.jsonc`
+- D1 binding: `DB` (satya-academy-db)
+- Static assets binding: `ASSETS`
+- Secret: `TURNSTILE_SECRET`
+- Optional variable: `ALLOWED_ORIGIN` (defaults to https://satyaacademy.org)
 
-## Setup
-1. Create a Cloudflare D1 database.
-2. Run `schema.sql` against the database.
-3. Deploy this Worker using Wrangler and bind the database as `DB`.
-4. Set `TURNSTILE_SECRET` as a Worker secret.
-5. Set `ALLOWED_ORIGIN` to `https://satyaacademy.org`.
-6. Configure a Turnstile site key on the website (the public site key is not secret).
-7. Test both endpoints before connecting the website forms.
+## Security and validation
+- Server-side Turnstile verification required
+- Origin allow-list for the apex and www domains
+- Input validation and length limits
+- Honeypot handling
+- No public read or admin endpoint in this stage
 
-The website UI integration, admin dashboard, email notifications, and custom-domain routing are separate subsequent steps. Do not switch DNS or replace the production site during this phase.
+## Deployment/testing
+1. Confirm the D1 binding in the Wrangler configuration matches the Cloudflare database.
+2. Configure Turnstile site and secret keys for the staging deployment.
+3. Deploy to a staging Worker using Wrangler.
+4. Test the API endpoints and static website before connecting website forms or changing DNS.

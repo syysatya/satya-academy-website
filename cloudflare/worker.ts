@@ -1,5 +1,6 @@
 export interface Env {
   DB: D1Database;
+  ASSETS: Fetcher;
   TURNSTILE_SECRET: string;
   ALLOWED_ORIGIN?: string;
 }
@@ -36,10 +37,17 @@ async function verifyTurnstile(token: string, secret: string): Promise<boolean> 
 
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {
+    const url = new URL(request.url);
     const origin = request.headers.get("Origin") || "";
     const allowed = env.ALLOWED_ORIGIN || "https://satyaacademy.org";
-    if (origin && origin !== allowed && origin !== "https://www.satyaacademy.org") {
+
+    const isAllowed = !origin || origin === allowed || origin === "https://www.satyaacademy.org";
+    if (!isAllowed && url.pathname.startsWith("/api/")) {
       return json({ error: "Origin not allowed." }, 403, allowed);
+    }
+
+    if (url.pathname !== "/api/trial" && url.pathname !== "/api/feedback") {
+      return env.ASSETS.fetch(request);
     }
     if (request.method === "OPTIONS") {
       return new Response(null, { status: 204, headers: headers(allowed) });
@@ -49,15 +57,9 @@ export default {
       return json({ error: "Expected JSON." }, 415, allowed);
     }
 
-    const url = new URL(request.url);
-    if (url.pathname !== "/api/trial" && url.pathname !== "/api/feedback") {
-      return json({ error: "Not found." }, 404, allowed);
-    }
-
     let body: Record<string, unknown>;
     try { body = await request.json(); } catch { return json({ error: "Invalid request." }, 400, allowed); }
 
-    // Honeypot field: quietly accept without storing.
     if (clean(body.website, 200) || clean(body.botField, 200)) {
       return json({ success: true }, 200, allowed);
     }
@@ -77,7 +79,7 @@ export default {
       const curriculum = clean(body.curriculum, 100);
       const preferredTime = clean(body.preferred_time, 200);
       const notes = clean(body.notes, 2000);
-      if (!parentName || !/^\S+@\S+\.\S+$/.test(email) || !phone || !studentName || !grade || !subject) {
+      if (!parentName || !/^\\S+@\\S+\\.\\S+$/.test(email) || !phone || !studentName || !grade || !subject || !curriculum) {
         return json({ error: "Please complete all required fields correctly." }, 400, allowed);
       }
       await env.DB.prepare(`INSERT INTO trial_requests
@@ -89,10 +91,12 @@ export default {
     const name = clean(body.name, 100);
     const role = clean(body.role, 30);
     const course = clean(body.course, 100);
-    const rating = clean(body.rating, 20);
+    const ratingText = clean(body.rating, 20);
+    const ratingMatch = ratingText.match(/[1-5]/);
+    const rating = ratingMatch ? Number(ratingMatch[0]) : Number(body.rating);
     const feedback = clean(body.feedback, 3000);
     const permission = body.publish_permission === true;
-    if (!name || !feedback || !["Student","Parent"].includes(role) || !["5 out of 5","4 out of 5","3 out of 5","2 out of 5","1 out of 5"].includes(rating)) {
+    if (!name || !feedback || !["Student","Parent"].includes(role) || !Number.isInteger(rating) || rating < 1 || rating > 5) {
       return json({ error: "Please complete all required feedback fields." }, 400, allowed);
     }
     await env.DB.prepare(`INSERT INTO feedback
