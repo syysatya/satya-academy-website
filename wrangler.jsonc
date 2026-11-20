@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json.schemastore.org/wrangler.json",
+  "name": "satya-academy-website",
+  "main": "cloudflare/worker.ts",
+  "compatibility_date": "2026-11-20",
+  "assets": {
+    "directory": "./public",
+    "binding": "ASSETS"
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "satya-academy-db",
+      "database_id": "45eb5d8d-2087-4c3b-8a8e-9375b36231e9"
+    }
+  ]
+}
