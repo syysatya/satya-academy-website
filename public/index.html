@@ -185,6 +185,9 @@ footer{padding:2rem 0;color:var(--muted);font-size:.95rem;text-align:center}
 /* Responsive navigation */
 .nav-toggle{display:none;background:transparent;color:var(--chalk);border:1px solid rgba(255,255,255,.35);border-radius:10px;padding:.6rem .9rem;font:inherit;font-weight:600}
 @media(max-width:760px){header.nav{align-items:center;gap:.6rem}.nav-toggle{display:inline-flex;align-items:center;gap:.5rem}header.nav nav{display:none;width:100%;flex-direction:column;align-items:stretch;gap:.25rem;padding:.5rem 0 1rem}header.nav nav.open{display:flex}header.nav nav a{margin:0;padding:.7rem 1rem;border-radius:10px}header.nav nav a:hover{background:rgba(255,255,255,.12)}header.nav nav a.student-login{background:var(--pencil);color:var(--pencil-ink);font-weight:700}.hero-grid .actions{display:flex;flex-direction:column;align-items:stretch;gap:.75rem}.hero-grid .actions .btn{text-align:center}}
+
+/* SEO support content and FAQs */
+.support-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1rem;margin-top:1.5rem}.support-grid article{border:1px solid var(--line);border-radius:16px;padding:1.25rem;background:var(--surface)}.support-grid article h3{margin-bottom:.5rem}.support-grid article p{margin:0}.faq-list{display:grid;gap:.75rem;margin-top:1.5rem}.faq-list details{border:1px solid var(--line);border-radius:12px;padding:1rem;background:var(--surface)}.faq-list summary{font-weight:700;cursor:pointer}.faq-list details p{margin:.75rem 0 0}
 </style>
 </head>
 <body>
@@ -245,6 +248,34 @@ footer{padding:2rem 0;color:var(--muted);font-size:.95rem;text-align:center}
       <div class="subject"><h3>College calculus and beyond</h3><ul><li>Calculus 1 (single variable, differential)</li><li>Calculus 2 (single variable, integral)</li><li>Calculus 3 (multivariable)</li><li>Calculus 4 (vector calculus)</li><li>Linear Algebra</li><li>Ordinary Differential Equations</li></ul></div>
       <div class="subject"><h3>Advanced mathematics</h3><ul><li>Discrete Math</li><li>Abstract Algebra</li><li>Real Analysis</li><li>Complex Analysis</li><li>Topology</li><li>Functional Analysis</li></ul><p style="margin-top:.75rem">Plus all other higher-level math subjects. Ask if you don’t see yours.</p></div>
       <div class="subject"><h3>Test prep and competitions</h3><ul><li>SAT Math</li><li>PSAT Math</li><li>ACT Math</li><li>AMC 8/10/12</li><li>AIME</li><li>MATHCOUNTS</li></ul><p style="margin-top:.75rem">Other competitive exams on request. Ask if you don’t see yours.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="learning-support">
+  <div class="wrap">
+    <h2>Online math tutoring tailored to each student's goals</h2>
+    <p>Satya Academy offers personalized online math tutoring for middle school, high school, AP courses, international curricula and college mathematics. Lessons focus on understanding concepts, building problem-solving confidence, practicing carefully and preparing for assessments.</p>
+    <div class="support-grid">
+      <article><h3>US school math</h3><p>Algebra 1, Algebra 2, Geometry, Trigonometry and Precalculus, including honors coursework.</p></article>
+      <article><h3>AP mathematics</h3><p>AP Precalculus, AP Calculus AB, AP Calculus BC and AP Statistics, with concept review and exam-style practice.</p></article>
+      <article><h3>IB and international</h3><p>IB MYP and IB Diploma mathematics, including Mathematics AA and Mathematics AI.</p></article>
+      <article><h3>College mathematics</h3><p>Calculus I–III, Linear Algebra, Probability and Statistics, Differential Equations and more.</p></article>
+      <article><h3>Exam preparation</h3><p>Focused preparation for SAT Math, ACT Math and math competitions.</p></article>
+      <article><h3>Personalized learning</h3><p>Lessons adapt to each learner's level, pace, curriculum, questions and goals.</p></article>
+    </div>
+  </div>
+</section>
+
+<section id="faq">
+  <div class="wrap">
+    <h2>Frequently asked questions about online math tutoring</h2>
+    <div class="faq-list">
+      <details><summary>Which math subjects and grades do you tutor?</summary><p>Satya Academy supports Math 6 through high school, AP math, IB math, SAT and ACT Math, competitions, and many college-level mathematics courses.</p></details>
+      <details><summary>Are lessons one-on-one and online?</summary><p>Yes. Lessons are delivered online and personalized to the student's course, learning needs and goals.</p></details>
+      <details><summary>Can you help with AP Calculus and AP Statistics?</summary><p>Yes. Tutoring is available for AP Precalculus, AP Calculus AB, AP Calculus BC and AP Statistics.</p></details>
+      <details><summary>Do you teach IB Mathematics AA and AI?</summary><p>Yes. Support is available for IB mathematics pathways and levels, tailored to syllabus and school pacing.</p></details>
+      <details><summary>How can we start?</summary><p>Use the contact form to request a free trial lesson and share the student's course and goals.</p></details>
     </div>
   </div>
 </section>
@@ -740,6 +771,10 @@ nav a.student-login span{font-size:1rem}
  toggle.addEventListener('click',function(){const open=menu.classList.toggle('open');toggle.setAttribute('aria-expanded',String(open));toggle.textContent=open?'Close ✕':'Menu ☰';});
  menu.querySelectorAll('a[href^="#"]').forEach(function(link){link.addEventListener('click',function(){menu.classList.remove('open');toggle.setAttribute('aria-expanded','false');toggle.textContent='Menu ☰';});});
 })();
+</script>
+
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Which math subjects and grades do you tutor?","acceptedAnswer":{"@type":"Answer","text":"Satya Academy supports Math 6 through high school, AP math, IB math, SAT and ACT Math, competitions, and many college-level mathematics courses."}},{"@type":"Question","name":"Are lessons one-on-one and online?","acceptedAnswer":{"@type":"Answer","text":"Yes. Lessons are delivered online and personalized to the student's course, learning needs and goals."}},{"@type":"Question","name":"Can you help with AP Calculus and AP Statistics?","acceptedAnswer":{"@type":"Answer","text":"Yes. Tutoring is available for AP Precalculus, AP Calculus AB, AP Calculus BC and AP Statistics."}},{"@type":"Question","name":"Do you teach IB Mathematics AA and AI?","acceptedAnswer":{"@type":"Answer","text":"Yes. Support is available for IB mathematics pathways and levels, tailored to syllabus and school pacing."}},{"@type":"Question","name":"How can we start?","acceptedAnswer":{"@type":"Answer","text":"Use the contact form to request a free trial lesson and share the student's course and goals."}}]}
 </script>
 </body>
 </html>
